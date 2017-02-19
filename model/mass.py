@@ -35,6 +35,11 @@ def Class Mass:
         for i in range(5):
             self.photons.append(Photon(self.mass, None, None))
 
+    def roll(self):
+
+
+        pass
+
     def transform(self, axis):
     """ 
         Performs the rotation transformation on photon array
@@ -46,6 +51,8 @@ def Class Mass:
 
         if abs(axis) == 1:
             
+            
+            inv = [0, 5]
             T[0,0] = 1
             T[4,1] = 1
             T[1,2] = 1
@@ -54,7 +61,8 @@ def Class Mass:
             T[5,5] = 1
 
         if abs(axis) == 2:
-
+    
+            inv = [2, 4]
             T[1,0] = 1
             T[5,1] = 1
             T[2,2] = 1
@@ -64,6 +72,7 @@ def Class Mass:
 
         if abs(axis) == 3:
 
+            inv = [1, 3]
             T[2,0] = 1
             T[1,1] = 1
             T[5,2] = 1
@@ -76,9 +85,8 @@ def Class Mass:
         else:
             self.a = np.dot(np.a, np.transpose(T))
 
-    def roll(self):
-
-        pass
+        for pt in inv:
+            
 
     def interact(self):
 

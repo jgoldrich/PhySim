@@ -501,7 +501,7 @@ function tick() {
     handleKeys();
     draw();
     
-//    animate();
+    animate();
 }
 
 /* =================================EVENT HANDLING================================= */
@@ -629,9 +629,10 @@ function setupTerrainDraw() {
 
 function setupSpheresDraw() {
     
-    for (var step = 0; step < spheres.length && step < 4; step++) { //spheres.length
+    // this 2D for loop will draw all, but want to draw the appropriate time step depending on the actual time
+//    for (var step = 0; step < spheres.length && step < 4; step++) { //spheres.length
         
-        for (var i = 0; i < spheres[step].length; i++) {
+        for (var i = 0; i < spheres[ind].length; i++) {
 
             var transformVec = vec3.create(); // vector to move objects around
             var scaleVec = vec3.create(); // scaling vector
@@ -647,7 +648,7 @@ function setupSpheresDraw() {
             var ka = vec3.fromValues(0.0,0.0,0.0); // ambient
     //        var kd = vec3.fromValues(0.6,0.6,0.0); // diffuse
             
-            kd = spheres[step][i].color;
+            kd = spheres[ind][i].color;
             
             var ks = vec3.fromValues(1.0,1.0,1.0); // specular
 
@@ -657,10 +658,10 @@ function setupSpheresDraw() {
             // scale down pos
 //            spheres[step][i].position[2] *= (20.0/2045.0);
             
-            mat4.translate(mvMatrix, mvMatrix, spheres[step][i].position);
+            mat4.translate(mvMatrix, mvMatrix, spheres[ind][i].position);
 
     //        scaleFactor = 1.0;
-            scaleFactor = 10*spheres[step][i].radius;
+            scaleFactor = 10*spheres[ind][i].radius;
             vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
             mat4.scale(mvMatrix, mvMatrix, scaleVec);
 
@@ -675,55 +676,60 @@ function setupSpheresDraw() {
             mvPopMatrix();
 
         }
-    }
+//    }
 }
 
 // update positions of the spheres here?
 var ind = 0;
+var counter = 0;
 function animate() {
 
-    var rad_scale = 1.0;
+    counter++;
+    ind = Math.floor(counter / 100); // handles time stepping
+    ind = Math.min(spheres.length, ind);
     
-    var currNumSpheres = spheres.length;
-    
-    for (var i = 0; i < currNumSpheres && currNumSpheres < 50; i++) {
-        thisPos = spheres[i].position;
-        thisRad = spheres[i].radius;
-        
-        // plus-x
-        var newRad = Math.random()*rad_scale;
-        var new_x_pos = vec3.create();
-        vec3.add(new_x_pos, thisPos, vec3.fromValues(thisRad+newRad, 0, 0));
-        pos_x = new Sphere(newRad, new_x_pos);
-        spheres.push(pos_x);
-        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
-        
-        // neg-x
-//        newRad = Math.random()*rad_scale;
-        var new_x_neg = vec3.create();
-        vec3.add(new_x_neg, thisPos, vec3.fromValues(-(thisRad+newRad), 0, 0));
-        neg_x = new Sphere(newRad, new_x_neg);
-        spheres.push(neg_x);
-        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
-        
-        // pos-y
-//        newRad = Math.random()*rad_scale;
-        var new_y_pos = vec3.create();
-        vec3.add(new_y_pos, thisPos, vec3.fromValues(0, thisRad+newRad, 0));
-        pos_y = new Sphere(newRad, new_y_pos);
-        spheres.push(pos_y);
-        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
-        
-        // neg-y
-//        newRad = Math.random()*rad_scale;
-        var new_y_neg = vec3.create();
-        vec3.add(new_y_neg, thisPos, vec3.fromValues(0, -(thisRad+newRad), 0));
-        neg_y = new Sphere(newRad, new_y_neg);
-        spheres.push(neg_y);
-        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
-
-        
-    }
+//    var rad_scale = 1.0;
+//    
+//    var currNumSpheres = spheres.length;
+//    
+//    for (var i = 0; i < currNumSpheres && currNumSpheres < 50; i++) {
+//        thisPos = spheres[i].position;
+//        thisRad = spheres[i].radius;
+//        
+//        // plus-x
+//        var newRad = Math.random()*rad_scale;
+//        var new_x_pos = vec3.create();
+//        vec3.add(new_x_pos, thisPos, vec3.fromValues(thisRad+newRad, 0, 0));
+//        pos_x = new Sphere(newRad, new_x_pos);
+//        spheres.push(pos_x);
+//        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+//        
+//        // neg-x
+////        newRad = Math.random()*rad_scale;
+//        var new_x_neg = vec3.create();
+//        vec3.add(new_x_neg, thisPos, vec3.fromValues(-(thisRad+newRad), 0, 0));
+//        neg_x = new Sphere(newRad, new_x_neg);
+//        spheres.push(neg_x);
+//        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+//        
+//        // pos-y
+////        newRad = Math.random()*rad_scale;
+//        var new_y_pos = vec3.create();
+//        vec3.add(new_y_pos, thisPos, vec3.fromValues(0, thisRad+newRad, 0));
+//        pos_y = new Sphere(newRad, new_y_pos);
+//        spheres.push(pos_y);
+//        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+//        
+//        // neg-y
+////        newRad = Math.random()*rad_scale;
+//        var new_y_neg = vec3.create();
+//        vec3.add(new_y_neg, thisPos, vec3.fromValues(0, -(thisRad+newRad), 0));
+//        neg_y = new Sphere(newRad, new_y_neg);
+//        spheres.push(neg_y);
+//        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+//
+//        
+//    }
     
     
     

@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
     random.seed(datetime.now())
 
-    n_sphere = 100
+    n_sphere = 1000
     const = 10
 
     data = np.zeros((n_sphere, 4))

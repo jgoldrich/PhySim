@@ -11,14 +11,6 @@ var vertexPositionBuffer;
 var sphereVertexPositionBuffer; // Create a place to store sphere geometry
 var sphereVertexNormalBuffer; // Create a place to store normals for shading
 
-///////// try with obj
-var vSphere = [];
-var nSphere = [];
-var fSphere = [];
-
-var sphereIndexTriBuffer;
-////////
-
 // plane base geom
 var tVertexPositionBuffer; // Create a place to store terrain geometry
 var tVertexNormalBuffer; // Create a place to store normals for shading
@@ -49,43 +41,22 @@ var raw_sphere_data = [];
 // sphere buffer
 function setupSphereBuffers() {
     
-//    var sphereSoup=[];
-//    var sphereNormals=[];
-//    var numT=sphereFromSubdivision(6,sphereSoup,sphereNormals);
-//    console.log(numT);
-//    sphereVertexPositionBuffer = gl.createBuffer(); // initialize buffer to hold the vertices of the sphere
-//    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer); // set the sphere vertices as a buffer
-//    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphereSoup), gl.STATIC_DRAW); // load the sphere vertices buffer with the data
-//    sphereVertexPositionBuffer.itemSize = 3; // 3 vertices per triangle
-//    sphereVertexPositionBuffer.numItems = numT*3; // number of vertices
-//    
-//    // Specify normals to be able to do lighting calculations
-//    sphereVertexNormalBuffer = gl.createBuffer(); // initialize vertex normal buffer - for shading
-//    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer); // set as a buffer
-//    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphereNormals), gl.STATIC_DRAW); // load up the buffer
-//    sphereVertexNormalBuffer.itemSize = 3;
-//    sphereVertexNormalBuffer.numItems = numT*3;
+    var sphereSoup=[];
+    var sphereNormals=[];
+    var numT=sphereFromSubdivision(6,sphereSoup,sphereNormals);
+    console.log(numT);
+    sphereVertexPositionBuffer = gl.createBuffer(); // initialize buffer to hold the vertices of the sphere
+    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer); // set the sphere vertices as a buffer
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphereSoup), gl.STATIC_DRAW); // load the sphere vertices buffer with the data
+    sphereVertexPositionBuffer.itemSize = 3; // 3 vertices per triangle
+    sphereVertexPositionBuffer.numItems = numT*3; // number of vertices
     
-    // specify veritces
-    sphereVertexPositionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer);   
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vSphere), gl.STATIC_DRAW);
-    sphereVertexPositionBuffer.itemSize = 3;
-    sphereVertexPositionBuffer.numItems = vSphere.length/3;
-    
-    // Specify normals to be able to do lighting calculations - uncomment after calculating normals
-    sphereVertexNormalBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(nSphere), gl.STATIC_DRAW);
+    // Specify normals to be able to do lighting calculations
+    sphereVertexNormalBuffer = gl.createBuffer(); // initialize vertex normal buffer - for shading
+    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer); // set as a buffer
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphereNormals), gl.STATIC_DRAW); // load up the buffer
     sphereVertexNormalBuffer.itemSize = 3;
-    sphereVertexNormalBuffer.numItems = nSphere.length/3; // ?
-    
-    // Specify faces of the teapot 
-    sphereIndexTriBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereIndexTriBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(fSphere), gl.STATIC_DRAW);
-    sphereIndexTriBuffer.itemSize = 1;
-    sphereIndexTriBuffer.numItems = fSphere.length; // ?
+    sphereVertexNormalBuffer.numItems = numT*3;
     
 }
 
@@ -134,30 +105,15 @@ function setupTerrainBuffers() {
 // draw a sphere
 function drawSphere() {
     
-//    // bind vertex pos buffer
-//    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer); // set the vertex position buffer as a buffer - need? already bound in setup
-//    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, sphereVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0); // setup the aVertexPosition attribute in the shader to point to the buffer containing the vertex position data
-//
-//    // Bind normal buffer
-//    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer);
-//    gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, sphereVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
-//    
-//    gl.drawArrays(gl.TRIANGLES, 0, sphereVertexPositionBuffer.numItems);   
-    
-    gl.polygonOffset(0,0);
-    
- // bind vertex buffer
- gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer);
- gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, sphereVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    // bind vertex pos buffer
+    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer); // set the vertex position buffer as a buffer - need? already bound in setup
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, sphereVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0); // setup the aVertexPosition attribute in the shader to point to the buffer containing the vertex position data
 
- // Bind normal buffer - uncomment soon
- gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer);
- gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, sphereVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);   
+    // Bind normal buffer
+    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer);
+    gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, sphereVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
     
- // Draw 
- gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereIndexTriBuffer);
- gl.drawElements(gl.TRIANGLES, sphereIndexTriBuffer.numItems, gl.UNSIGNED_SHORT,0);   // issue with unsigned short? // check the buffer
-    
+    gl.drawArrays(gl.TRIANGLES, 0, sphereVertexPositionBuffer.numItems);      
 }
 
 // draw the plane
@@ -373,17 +329,14 @@ function loadData() {
         type : "GET",
         url : "dummy_data.csv",
         dataType : "text"
-    }).done(processData)//.done(processObj).done(startup());
+    }).done(processData).done(function(){startup();});
     
     // load sphere geom from obj
-    $.get("sphere.obj", function(data) {
-            processObj(data);
-    }).done(function(){startup()});
     
 }
 
 function processData(data) {
-    
+
     // start with big bang
     var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
     bigBang.color = vec3.fromValues(1,1,0); // set its color
@@ -405,54 +358,9 @@ function processData(data) {
         
     }
     
-//    console.log('processed data');
-    
 //    console.log(spheres);
+    
 //    startup();
-
-}
-
-function processObj(data) {
-
-    var lines = data.split("\n");
-    
-    for (var i = 0; i < lines.length; i++) {
-        var currLine = lines[i];
-        var currLineSplit = currLine.split(" ");
-        
-        var type = currLineSplit[0];
-        
-        if (type == "v") {
-            vSphere.push(currLineSplit[2]);
-            vSphere.push(currLineSplit[3]);
-            vSphere.push(currLineSplit[4]);
-            
-            // calculate normals as just the normalized coordinate
-            var normal = vec3.fromValues(currLineSplit[2], currLineSplit[3], currLineSplit[4]);
-            vec3.normalize(normal, normal);
-            
-            nSphere.push(normal[0]);
-            nSphere.push(normal[1]);
-            nSphere.push(normal[2]);
-            
-        } else if (type == "f") {
-            // remember to subtract by 1 to account for being 1-indexed instead of 0 for the verts
-            var face1s = currLineSplit[1].split("/");
-            fSphere.push(face1s[0]-1);
-            
-            var face2s = currLineSplit[3].split("/");
-            fSphere.push(face2s[0]-1);
-            
-            var face3s = currLineSplit[5].split("/");
-            fSphere.push(face3s[0]-1);
-            
-        }
-    }
-    
-//    // start with big bang
-//    var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
-//    bigBang.color = vec3.fromValues(1,1,0); // set its color
-//    spheres.push(bigBang);
     
 }
 
@@ -617,7 +525,7 @@ function setupSpheresDraw() {
         mat4.translate(mvMatrix, mvMatrix, spheres[i].position);
 
 //        scaleFactor = 1.0;
-        scaleFactor = 10*spheres[i].radius;
+        scaleFactor = spheres[i].radius;
         vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
         mat4.scale(mvMatrix, mvMatrix, scaleVec);
 

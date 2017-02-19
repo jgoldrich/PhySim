@@ -127,13 +127,11 @@ function drawTerrain(){
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, tIndexTriBuffer);
  
     // draw with the indexed face mesh and vertices
-    gl.drawElements(gl.TRIANGLES, tIndexTriBuffer.numItems, gl.UNSIGNED_SHORT,0);      
-    
-    // TODO: add draw for the faces/edges of the plane
+    gl.drawElements(gl.TRIANGLES, tIndexTriBuffer.numItems, gl.UNSIGNED_SHORT,0);
     
 }
 
-//-------------------------------------------------------------------------
+// draw square edges of the grid
 function drawTerrainEdges(){
  gl.polygonOffset(1,1);
  gl.bindBuffer(gl.ARRAY_BUFFER, tVertexPositionBuffer);
@@ -331,6 +329,10 @@ function startup() {
     document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;
 
+    // start with big bang
+    var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
+    spheres.push(bigBang);
+    
     tick(); // kick off the rendering and animation loop
 }
 
@@ -423,7 +425,7 @@ function setupTerrainDraw() {
     var Is = vec3.fromValues(1.0,1.0,1.0); // specular
 
     // Set up material parameters    
-    var ka = vec3.fromValues(1.0,1.0,1.0); // ambient
+    var ka = vec3.fromValues(0.0,0.0,0.0); // ambient - black background
     var kd = vec3.fromValues(0.0,0.0,0.0); // diffuse
     var ks = vec3.fromValues(0.0,0.0,0.0); // specular
 
@@ -442,47 +444,78 @@ function setupTerrainDraw() {
     uploadLightsToShader(lightPosEye,Ia,Id,Is);
     uploadMaterialToShader(ka,kd,ks);
     setMatrixUniforms();
-//    drawTerrain();
+    drawTerrain();
+    
+    ka = vec3.fromValues(1.0, 1.0, 1.0) // white edges
+    uploadLightsToShader(lightPosEye,Ia,Id,Is);
+    uploadMaterialToShader(ka,kd,ks);
+    setMatrixUniforms();
     drawTerrainEdges();
     mvPopMatrix();
 }
 
 function setupSpheresDraw() {
-    var transformVec = vec3.create(); // vector to move objects around
-    var scaleVec = vec3.create(); // scaling vector
     
-    // TODO: make for loop to render all the spheres each refresh frame
+    for (var i = 0; i < spheres.length; i++){
     
-    // Set up light parameters
-    var Ia = vec3.fromValues(1.0,1.0,1.0); // ambient
-    var Id = vec3.fromValues(1.0,1.0,1.0); // diffuse
-    var Is = vec3.fromValues(1.0,1.0,1.0); // specular
+        var transformVec = vec3.create(); // vector to move objects around
+        var scaleVec = vec3.create(); // scaling vector
 
-    // Set up material parameters    
-    var ka = vec3.fromValues(0.0,0.0,0.0); // ambient
-    var kd = vec3.fromValues(0.6,0.6,0.0); // diffuse
-    var ks = vec3.fromValues(1.0,1.0,1.0); // specular
+        // TODO: make for loop to render all the spheres each refresh frame
 
-    mvPushMatrix(); // for matrix transformation
-    vec3.set(transformVec, 0, 0, 5) // use this to set the position
-    mat4.translate(mvMatrix, mvMatrix, transformVec);
+        // Set up light parameters
+        var Ia = vec3.fromValues(1.0,1.0,1.0); // ambient
+        var Id = vec3.fromValues(1.0,1.0,1.0); // diffuse
+        var Is = vec3.fromValues(1.0,1.0,1.0); // specular
 
-    scaleFactor = 1.0
-    vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
-    mat4.scale(mvMatrix, mvMatrix, scaleVec);
+        // Set up material parameters    
+        var ka = vec3.fromValues(0.0,0.0,0.0); // ambient
+//        var kd = vec3.fromValues(0.6,0.6,0.0); // diffuse
+        kd = spheres[i].color;
+        var ks = vec3.fromValues(1.0,1.0,1.0); // specular
+
+        mvPushMatrix(); // for matrix transformation
+//        vec3.set(transformVec, 0, 0, 0); // use this to set the position // +5 z?
+        mat4.translate(mvMatrix, mvMatrix, spheres[i].position);
+
+//        scaleFactor = 1.0;
+        scaleFactor = spheres[i].radius;
+        vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
+        mat4.scale(mvMatrix, mvMatrix, scaleVec);
+
+    //    mat4.rotateX(mvMatrix, mvMatrix, degToRad(-55))
+    //    mat4.rotateY(mvMatrix, mvMatrix, degToRad(0))
+    //    mat4.rotateZ(mvMatrix, mvMatrix, degToRad(35))
+
+        uploadLightsToShader(lightPosEye,Ia,Id,Is);
+        uploadMaterialToShader(ka,kd,ks);
+        setMatrixUniforms();
+        drawSphere();
+        mvPopMatrix();
     
-//    mat4.rotateX(mvMatrix, mvMatrix, degToRad(-55))
-//    mat4.rotateY(mvMatrix, mvMatrix, degToRad(0))
-//    mat4.rotateZ(mvMatrix, mvMatrix, degToRad(35))
-
-    uploadLightsToShader(lightPosEye,Ia,Id,Is);
-    uploadMaterialToShader(ka,kd,ks);
-    setMatrixUniforms();
-    drawSphere();
-    mvPopMatrix();
+    }
 }
 
 // update positions of the spheres here?
+var ind = 0;
 function animate() {
 
+    var rad_scale = 5.0;
+    var temp_pos = vec3.create();
+    
+    for (var i = 0; i < spheres.length; i++) {
+        if (spheres.length > 1) break;
+        thisPos = spheres[i].position;
+        thisRad = spheres[i].radius;
+        
+        var newRad = Math.random()*rad_scale;
+        vec3.add(temp_pos, thisPos, vec3.fromValues(thisRad+newRad, 0, 0));
+        pos_x = new Sphere(newRad, temp_pos);
+        spheres.push(pos_x);
+        
+    }
+    
+//    spheres[0].position = vec3.fromValues(ind+=.1, 0, 0)
+    
+    
 }

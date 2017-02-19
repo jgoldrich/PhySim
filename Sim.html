@@ -93,8 +93,21 @@
         <button type="button" id="add" onclick="restart();">Restart</button>
         
         <form method="post" action="demoform.asp">
+            <label for="points">Speed</label>
+            <input style="margin-right: 50px;" type="range" name="spped" id="speed" value="10" min="1" max="100">
+        </form>
+        
+        <form id="input_form" style="width: 750px;">
+            <fieldset>
+                <legend><b>Animation</b></legend>
+                <input type="radio" name="primitive" id="animate" value="animate" checked> Animate Simulation
+                <input type="radio" name="primitive" id="pause" value="pause"> Pause to Browse Time Steps
+            </fieldset>
+        </form>
+        
+        <form method="post" action="demoform.asp">
             <label for="points">Time Step</label>
-            <input style="margin-right: 50px;" type="range" name="ts" id="ts" value="10" min="1" max="100">
+            <input style="margin-right: 50px;" type="range" name="ts" id="ts" value="0" min="0" max="15">
         </form>
         
     </body>

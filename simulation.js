@@ -684,10 +684,23 @@ var ind = 0;
 var counter = 0;
 function animate() {
 
-    counter++;
-    var ts = document.getElementById("ts").value;
-    ind = Math.floor(counter / ts); // handles time stepping
-    ind = Math.min(spheres.length-1, ind);
+    if (document.getElementById("animate").checked) {
+        counter++;
+        var speed = document.getElementById("speed").value;
+        ind = Math.floor(counter / speed); // handles time stepping
+        
+        if (ind > spheres.length-1) {
+            ind = 0;
+            counter = 0;
+        }
+        
+        //ind = Math.min(spheres.length-1, ind);
+        
+
+    } else if (document.getElementById("pause").checked) {
+        var ts = document.getElementById("ts").value;
+        ind = ts;
+    }
     
 //    var rad_scale = 1.0;
 //    

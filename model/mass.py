@@ -6,7 +6,7 @@ from photon import Photon
 
 def Class Mass:
 
-    def __init__(self, par_dict, mass, charge, x, y, z):
+    def __init__(self, mass, charge, parent_mass, x, y, z):
     """ 
         inputs: 
         mass (particle, at initialization)
@@ -16,14 +16,24 @@ def Class Mass:
     """
         self.mass = mass
         self.charge = charge
-		if mass == 0:
-			#do something
-			pass
-		else:
-        	self.a = np.array([0, 1, 2, 3, 4, 5])
-		self.location = [x, y, z]
+        self.parent_mass = parent_mass
+
+	if mass == 0:
+	    # then is the infinite radius sphere
+            # --> is a Cartesian two-space (R2)
+            #do something
+	    pas
+	else if parent_mass.mass == 0:
+            self.a = np.array([0, 1, 2, 3, 4, 5])
+	    self.location = [x, y, z]
+        else:
+            self.a = np.array([0, 1, 2, 3, 4, 5])
 		
-		self.photons = [Photon(self.mass, self) for i in range(6)]
+        # Define the 6 photon-grid on sphere surface
+        self.photons = []
+        self.photons.append(Photon(self.mass, parent_mass))
+        for i in range(5):
+            self.photons.append(Photon(self.mass, None, None))
 
     def transform(self, axis):
     """ 
@@ -66,6 +76,21 @@ def Class Mass:
         else:
             self.a = np.dot(np.a, np.transpose(T))
 
+    def roll(self):
 
-		
+        pass
+
+    def interact(self):
+
+        pass
+
+    def update(self):
+
+        state = self.interact()
+        if state == -1:
+            return -1
+        self.transform()
+	
+        return state
+
 

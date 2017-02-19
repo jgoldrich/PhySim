@@ -46,6 +46,7 @@ class Mass:
         """
         determines the value of the radius given the mass of the object
         """
+#        print(self.mass)
         radius = math.pow(self.mass, 1/3)
         if radius:
             pass

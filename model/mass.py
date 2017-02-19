@@ -35,10 +35,26 @@ def Class Mass:
         for i in range(5):
             self.photons.append(Photon(self.mass, None, None))
 
-    def roll(self):
-
-
-        pass
+  		"""  
+		def roll(self, direction):
+		"""
+		"""
+			roll in the given direction:
+			dir = 1, is +x direction
+			dir = 2, is -x direction
+			dir = 3, is +y direction
+			dir = 4, is -y direction
+		"""	
+		"""
+		if direction == 1:
+			self.loc[0] = self.loc[0] + 1
+		else if direction == 2:
+			self.loc[0] = self.loc[0] - 1
+		else if direction == 3:
+			self.loc[1] = self.loc[1] + 1
+		else:
+			self.loc[1] = self.loc[1] - 1
+       """
 
     def transform(self, axis):
     """ 
@@ -69,6 +85,9 @@ def Class Mass:
             T[0,3] = 1
             T[4,4] = 1
             T[3,5] = 1
+						
+			dx = 1
+			dy = 0
 
         if abs(axis) == 3:
 
@@ -80,12 +99,17 @@ def Class Mass:
             T[0,4] = 1
             T[4,5] = 1
 
+			dx = 0
+			dy = 1
+
         if axis > 0:
             self.a = np.dot(np.a, T)
+			self.location[0] += dx
+			self.location[1] += dy
         else:
             self.a = np.dot(np.a, np.transpose(T))
-
-        for pt in inv:
+			self.location[0] -= dx
+			self.location[1] -= dy
             
 
     def interact(self):

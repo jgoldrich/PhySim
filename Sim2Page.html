@@ -22,7 +22,8 @@
   </ul>
 </nav>
 	
-     <!-- Vertex Shader-->
+  
+    <!-- Vertex Shader-->
     <script id="shader-vs" type="x-shader/x-vertex">
        attribute vec3 aVertexNormal;
        attribute vec3 aVertexPosition;
@@ -111,10 +112,10 @@
         
         <form method="post" action="demoform.asp">
             <label for="points">Speed</label>
-            <input style="margin-right: 50px;" type="range" name="speed" id="speed" value="10" min="1" max="100">
+            <input style="margin-right: 50px;" type="range" name="speed" id="speed" value="5" min="1" max="100">
             
             <label for="points">Time Step</label>
-            <input style="margin-right: 50px;" type="range" name="ts" id="ts" value="0" min="0" max="15">
+            <input style="margin-right: 50px;" type="range" name="ts" id="ts" value="0" min="0" max="300">
         </form>
         <h9>
         <form id="input_form" style="width: 750px;">
@@ -125,8 +126,8 @@
             </fieldset>
         </form>
 		</h9>
-		
-		</h8>
+        
+    </body>
     <div class="section">
 	<h7>Directional Control: Q/W/E/S, Tilt Control: A/D, Zoom Control: Z/X</h7>
 	</div>

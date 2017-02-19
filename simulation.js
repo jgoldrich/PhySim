@@ -371,7 +371,7 @@ function loadData() {
     // load spheres at all time steps from csv
     $.ajax({
         type : "GET",
-        url : "working_tangents.csv",//dummy_100steps.csv", // data
+        url : "500_steps.csv",//dummy_100steps.csv", // data "1000_steps_denser.csv",// "working_tangents.csv"
         dataType : "text"
     }).done(processData)//.done(processObj).done(startup());
     
@@ -398,7 +398,7 @@ function processData(data) {
     var currStepColor = vec3.fromValues(Math.random(), Math.random(), Math.random());
     
     // parse all the rows
-    for (var i = 0; i < allRows.length; i++) {
+    for (var i = 0; i < allRows.length && currTimeStep < 300; i++) {
         
         var currState = allRows[i].split(",");
         var thisRad = parseFloat(currState[1]);
@@ -587,7 +587,14 @@ function draw() {
     setupSpheresDraw();
     
     // put text on here at the bottom of the screen
+    drawText();
   
+}
+
+function drawText() {
+    
+    
+    
 }
 
 function setupTerrainDraw() {
@@ -632,53 +639,73 @@ function setupTerrainDraw() {
 function setupSpheresDraw() {
     
     // this 2D for loop will draw all, but want to draw the appropriate time step depending on the actual time
-//    for (var step = 0; step < spheres.length && step < 4; step++) { //spheres.length
         
-        for (var i = 0; i < spheres[ind].length; i++) {
+    var RED = vec3.fromValues(1.0, 0.0, 0.0);
+    var BLUE = vec3.fromValues(0.0, 0.0, 1.0);
+    
+    for (var i = 0; i < spheres[ind].length; i++) {
 
-            var transformVec = vec3.create(); // vector to move objects around
-            var scaleVec = vec3.create(); // scaling vector
+        var transformVec = vec3.create(); // vector to move objects around
+        var scaleVec = vec3.create(); // scaling vector
 
-            // TODO: make for loop to render all the spheres each refresh frame
+        // Set up light parameters
+        var Ia = vec3.fromValues(1.0,1.0,1.0); // ambient
+        var Id = vec3.fromValues(1.0,1.0,1.0); // diffuse
+        var Is = vec3.fromValues(1.0,1.0,1.0); // specular
 
-            // Set up light parameters
-            var Ia = vec3.fromValues(1.0,1.0,1.0); // ambient
-            var Id = vec3.fromValues(1.0,1.0,1.0); // diffuse
-            var Is = vec3.fromValues(1.0,1.0,1.0); // specular
+        // Set up material parameters    
+        var ka = vec3.fromValues(0.0,0.0,0.0); // ambient
+//        var kd = vec3.fromValues(0.6,0.6,0.0); // diffuse
 
-            // Set up material parameters    
-            var ka = vec3.fromValues(0.0,0.0,0.0); // ambient
-    //        var kd = vec3.fromValues(0.6,0.6,0.0); // diffuse
-            
-            kd = spheres[ind][i].color;
-            
-            var ks = vec3.fromValues(1.0,1.0,1.0); // specular
+        kd = spheres[ind][i].color;
+        
+        // recalculate the color as a blend beween red and blue (hot to cold temp) as a function of distance from origin
+        var pos = spheres[ind][i].position;
+        var dist = Math.sqrt(Math.pow(pos[0], 2) + Math.pow(pos[1], 2) + Math.pow(pos[2], 2));
+        
+        var newc = vec3.create();
+        vec3.scale(newc, RED, dist*25.0);
+//        kd = newc;
+//        
+//        var blue_minus_red = vec3.create();
+//        vec3.subtract(blue_minus_red, BLUE, RED);
+//        vec3.scale(blue_minus_red, blue_minus_red, dist);
+//        vec3.add(blue_minus_red, blue_minus_red, RED);
+//        
+//        vec3.normalize(blue_minus_red, blue_minus_red);
+//        for (var j = 0; j < 3; j++) {
+//            blue_minus_red[j] = Math.abs(blue_minus_red[j]);
+//        }
+//        
+//        kd = blue_minus_red;
+        //
 
-            mvPushMatrix(); // for matrix transformation
-    //        vec3.set(transformVec, 0, 0, 0); // use this to set the position // +5 z?
-            
-            // scale down pos
+        var ks = vec3.fromValues(1.0,1.0,1.0); // specular
+
+        mvPushMatrix(); // for matrix transformation
+//        vec3.set(transformVec, 0, 0, 0); // use this to set the position // +5 z?
+
+        // scale down pos
 //            spheres[step][i].position[2] *= (20.0/2045.0);
-            
-            mat4.translate(mvMatrix, mvMatrix, spheres[ind][i].position);
 
-    //        scaleFactor = 1.0;
-            scaleFactor = 10*spheres[ind][i].radius;
-            vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
-            mat4.scale(mvMatrix, mvMatrix, scaleVec);
+        mat4.translate(mvMatrix, mvMatrix, spheres[ind][i].position);
 
-        //    mat4.rotateX(mvMatrix, mvMatrix, degToRad(-55))
-        //    mat4.rotateY(mvMatrix, mvMatrix, degToRad(0))
-        //    mat4.rotateZ(mvMatrix, mvMatrix, degToRad(35))
+//        scaleFactor = 1.0;
+        scaleFactor = 10*spheres[ind][i].radius;
+        vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
+        mat4.scale(mvMatrix, mvMatrix, scaleVec);
 
-            uploadLightsToShader(lightPosEye,Ia,Id,Is);
-            uploadMaterialToShader(ka,kd,ks);
-            setMatrixUniforms();
-            drawSphere();
-            mvPopMatrix();
+    //    mat4.rotateX(mvMatrix, mvMatrix, degToRad(-55))
+    //    mat4.rotateY(mvMatrix, mvMatrix, degToRad(0))
+    //    mat4.rotateZ(mvMatrix, mvMatrix, degToRad(35))
 
-        }
-//    }
+        uploadLightsToShader(lightPosEye,Ia,Id,Is);
+        uploadMaterialToShader(ka,kd,ks);
+        setMatrixUniforms();
+        drawSphere();
+        mvPopMatrix();
+
+    }
 }
 
 // update positions of the spheres here?
@@ -757,4 +784,5 @@ function restart() {
     ind = 0;
     counter = 0;
 }
+
 

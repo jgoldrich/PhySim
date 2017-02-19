@@ -36,8 +36,10 @@ class Space:
         Loops through the masses after we update to check if any of the masses are located in the same space.
         If there are objects in the same space then we will either merge or destroy the objects.
         """		
-		max = len(self.masses)
+		max_len = len(self.masses)
         for i in range(len(self.masses)):
+			if i >= max_len:
+				break
             print("i = ", i)
             i = i-counter1
             mass1 = self.masses[i]
@@ -50,7 +52,7 @@ class Space:
                 #either split the two masses, or destroy the two masses
                     destroy = True
                     if(destroy):
-                        max -= 2
+                        max_len -= 2
                         counter2 = counter2 + 1
                         self.destroy_mass(j)
                         self.destroy_mass(i)

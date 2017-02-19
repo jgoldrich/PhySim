@@ -6,15 +6,31 @@ def Class Space:
 	def __init__(self):
 		
 		self.masses = list()
+		
 	
-	def createMass(self, par_dict, mass, charge):
+	def createMass(self, par_dict, mass, charge, x, y, z):
 		"""
 			inserts new Masses into the masses list
 		"""
-		masses.insert(0, Mass(par_dict, mass, charge))
+		masses.insert(0, Mass(par_dict, mass, charge, x, y, z))
+		
 
-	def roll(self, mass):
+	def destroy_mass(self, index):
+		#removes desired index from the list of masses
+		masses.remove(index)
+				
+
+	def update(self):
 		"""
-			Rolls mass to a new location
+			loops through all of the masses and updates their states.
+			If update returns -1 we remove that mass from the masses array.
 		"""
+		for i in len(self.masses):
+			mass = self.masses[i]
+			if(mass.parent_mass == 0):
+				state = mass.update()
+			if(state == -1):
+				destroy_mass(i)
+
+
 		

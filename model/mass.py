@@ -2,7 +2,7 @@ import numpy as np
 from sets import Set
 from photon import Photon
 from interactLaw import dummy
-
+import math
 
 def Class Mass:
 
@@ -55,6 +55,13 @@ def Class Mass:
 		else:
 			self.loc[1] = self.loc[1] - 1
        """
+	def radius(self):
+		"""
+			determines the value of the radius given the mass of the object
+		"""
+		radius = math.pow( self.mass, 1/3)
+
+		return radius
 
     def transform(self, axis, count):
     """ 

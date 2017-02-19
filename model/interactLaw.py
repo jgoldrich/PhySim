@@ -7,15 +7,18 @@ def dummy(photon1, photon2):
         if diff > 0:
             photon1.mass.mass += np.log(diff)
             photon2.mass.mass -= np.log(diff)
-
+        elif diff < 0:
+            photon1.mass.mass -= np.log(diff)
+            photon2.mass.mass += np.log(diff)
 
     if photon1.em and photon2.em:
         f = photon1.em * photon2.em
-        if f > 0:
-            photon1.mass.mass += np.log(f)
-            photon2.mass.mass += np.log(f)
-        if f < 0:
+        f = f / (photon1.mass.mass*photon2.mas.mass)
+        if photon1.mass.mass > photon2.mass.mass:
             photon1.mass.mass -= np.log(f)
+            photon2.mass.mass += np.log(f)
+        elif photon1.mass.mass < photon2.mass.mass:
+            photon1.mass.mass += np.log(f)
             photon2.mass.mass -= np.log(f)
     
 def strong(p1,p2):

@@ -177,7 +177,7 @@ class Mass:
         #    return -1
 
         #self.transform(axis, 0)
-        #self.move(V)	
+        self.move(V)	
         #return state
 
 

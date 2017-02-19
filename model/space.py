@@ -1,5 +1,6 @@
 from mass import Mass
 from photon import Photon
+import math
 
 def Class Space:
 	
@@ -18,7 +19,28 @@ def Class Space:
 	def destroy_mass(self, index):
 		#removes desired index from the list of masses
 		masses.remove(index)
-				
+
+	def distance(self, loc1, loc2):
+		x = (loc1[0] - loc2[0])**2
+		y = (loc1[1] - loc2[1])**2
+		z = (loc1[2] - loc2[2])**2
+		total = math.sqrt(x + y + z) 
+		return total
+
+	def check_collissions(self):
+		"""
+			Loops through the masses after we update to check if any of the masses are located in the same space.
+			If there are objects in the same space then we will either merge or destroy the objects.
+		"""		
+		for i in len(self.masses):
+			mass1 = self.masses[i]
+			for j in range(i, len(self.masses)):
+				mass2 = self.masses[j]
+				if(distance(mass1.location, mass2.location) < mass1.radius() + mass2.radius()):
+					#either merge the two masses, or destroy the two masses
+					pass
+				else:
+					pass
 
 	def update(self):
 		"""
@@ -31,6 +53,9 @@ def Class Space:
 				state = mass.update()
 			if(state == -1):
 				destroy_mass(i)
+		check_collissions()
+		
 
+	
 
 		

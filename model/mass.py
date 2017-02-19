@@ -46,7 +46,10 @@ class Mass:
         """
         determines the value of the radius given the mass of the object
         """
-        radius = math.pow( self.mass, -1/3)
+        radius = math.pow(self.mass, 1/3)
+        if radius:
+            pass
+#            radius = 1./radius
 
         return float(radius)
 
@@ -174,7 +177,7 @@ class Mass:
         #    return -1
 
         #self.transform(axis, 0)
-        self.move(V)	
+        #self.move(V)	
         #return state
 
 

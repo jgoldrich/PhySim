@@ -71,14 +71,15 @@ class Space:
         loops through all of the masses and updates their states.
         If update returns -1 we remove that mass from the masses array.
         """
-        self.createMass(1, 1, self.masses[0], 0., 0., 1.)        
+        new_mass = 1#math.ceil(random.random()*2.) + 1.
+        self.createMass(new_mass, 1, self.masses[0], 0., 0., 1.)        
         V = [0.,0.,0.]
 
         for i in range(len(self.masses)):
 
             for j in range(3):
                 V[j] = random.random()*3. - 1.5
-            self.masses[i].location += V
+            #self.masses[i].location += V
 
 #            mass = self.masses[i]
             axis = math.ceil(3.*random.random())

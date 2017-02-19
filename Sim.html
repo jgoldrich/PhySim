@@ -89,7 +89,14 @@
     <scrtip src="jquery.csv.js"></scrtip>
 
     <body onload="loadData();">
-        <canvas id="myGLCanvas" width="800" height="600"></canvas>
+        <canvas id="myGLCanvas" width="800" height="600"></canvas> <br/>
+        <button type="button" id="add" onclick="restart();">Restart</button>
+        
+        <form method="post" action="demoform.asp">
+            <label for="points">Time Step</label>
+            <input style="margin-right: 50px;" type="range" name="ts" id="ts" value="10" min="1" max="100">
+        </form>
+        
     </body>
 
 </html>

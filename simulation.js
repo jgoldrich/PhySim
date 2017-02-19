@@ -685,7 +685,8 @@ var counter = 0;
 function animate() {
 
     counter++;
-    ind = Math.floor(counter / 10); // handles time stepping
+    var ts = document.getElementById("ts").value;
+    ind = Math.floor(counter / ts); // handles time stepping
     ind = Math.min(spheres.length-1, ind);
     
 //    var rad_scale = 1.0;
@@ -735,5 +736,10 @@ function animate() {
     
 //    spheres[0].position = vec3.fromValues(ind+=.1, 0, 0)
        
+}
+
+function restart() {
+    ind = 0;
+    counter = 0;
 }
 

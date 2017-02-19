@@ -17,7 +17,7 @@ function terrainFromIteration(n, dim, minX,maxX,minY,maxY, vertexArray, faceArra
            vertexArray.push(minX+deltaX*j);
            vertexArray.push(minY+deltaY*i);
 
-           vertexArray.push(1);
+           vertexArray.push(0);
            
            // initialize the normal array here to all zeros
            normalArray.push(0);
@@ -118,5 +118,25 @@ function terrainFromIteration(n, dim, minX,maxX,minY,maxY, vertexArray, faceArra
     
     return numT;
 }
+
+// see if we need all the normals stuff here?
+
+function generateLinesFromIndexedTriangles(faceArray,lineArray)
+{
+    numTris=faceArray.length/3;
+    for(var f=0;f<numTris;f++)
+    {
+        var fid=f*3;
+        lineArray.push(faceArray[fid]);
+        lineArray.push(faceArray[fid+1]);
+        
+        lineArray.push(faceArray[fid+1]);
+        lineArray.push(faceArray[fid+2]);
+        
+        lineArray.push(faceArray[fid+2]);
+        lineArray.push(faceArray[fid]);
+    }
+}
+
 
 

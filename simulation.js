@@ -65,7 +65,7 @@ function setupTerrainBuffers() {
     var nTerrain=[]; // normals
     var eTerrain=[]; // edges
     
-    var n = 7; // change size of the plane
+    var n = 5; // change size of the plane
     var dim = Math.pow(2, n) + 1; // terrain is even 2^n + 1 by 2^n + 1 grid
     
     var numT = terrainFromIteration(n, dim, -1,1,-1,1, vTerrain, fTerrain, nTerrain); // TODO: change this function to change the fTerrain coords
@@ -88,6 +88,14 @@ function setupTerrainBuffers() {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(fTerrain), gl.STATIC_DRAW);
     tIndexTriBuffer.itemSize = 1;
     tIndexTriBuffer.numItems = numT*3; // TODO: this will change when render as square edges instead of triangles
+    
+    //Setup Edges
+     generateLinesFromIndexedTriangles(fTerrain,eTerrain);  
+     tIndexEdgeBuffer = gl.createBuffer();
+     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, tIndexEdgeBuffer);
+     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(eTerrain), gl.STATIC_DRAW);
+     tIndexEdgeBuffer.itemSize = 1;
+     tIndexEdgeBuffer.numItems = eTerrain.length;
      
 }
 
@@ -123,6 +131,21 @@ function drawTerrain(){
     
     // TODO: add draw for the faces/edges of the plane
     
+}
+
+//-------------------------------------------------------------------------
+function drawTerrainEdges(){
+ gl.polygonOffset(1,1);
+ gl.bindBuffer(gl.ARRAY_BUFFER, tVertexPositionBuffer);
+ gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, tVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+ // Bind normal buffer
+ gl.bindBuffer(gl.ARRAY_BUFFER, tVertexNormalBuffer);
+ gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, tVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);   
+    
+ //Draw 
+ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, tIndexEdgeBuffer);
+ gl.drawElements(gl.LINES, tIndexEdgeBuffer.numItems, gl.UNSIGNED_SHORT,0);      
 }
 
 /* =================================UPLOAD MATS TO SHADER================================= */
@@ -405,10 +428,10 @@ function setupTerrainDraw() {
     var ks = vec3.fromValues(0.0,0.0,0.0); // specular
 
     mvPushMatrix(); // for matrix transformation
-    vec3.set(transformVec, 0, -10, 25) // use this to set the position
+    vec3.set(transformVec, 0, 0, 0) // use this to set the position
     mat4.translate(mvMatrix, mvMatrix, transformVec);
 
-    scaleFactor = 15.0
+    scaleFactor = 30.0
     vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
     mat4.scale(mvMatrix, mvMatrix, scaleVec);
     
@@ -419,7 +442,8 @@ function setupTerrainDraw() {
     uploadLightsToShader(lightPosEye,Ia,Id,Is);
     uploadMaterialToShader(ka,kd,ks);
     setMatrixUniforms();
-    drawTerrain();
+//    drawTerrain();
+    drawTerrainEdges();
     mvPopMatrix();
 }
 
@@ -440,7 +464,7 @@ function setupSpheresDraw() {
     var ks = vec3.fromValues(1.0,1.0,1.0); // specular
 
     mvPushMatrix(); // for matrix transformation
-    vec3.set(transformVec, 0, 10, 20) // use this to set the position
+    vec3.set(transformVec, 0, 0, 5) // use this to set the position
     mat4.translate(mvMatrix, mvMatrix, transformVec);
 
     scaleFactor = 1.0

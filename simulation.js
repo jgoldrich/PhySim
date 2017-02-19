@@ -394,6 +394,8 @@ function processData(data) {
 //    console.log(allRows);
     
     var currTimeStep = 0;
+      
+    var currStepColor = vec3.fromValues(Math.random, Math.random, Math.random());
     
     // parse all the rows
     for (var i = 0; i < allRows.length; i++) {
@@ -408,13 +410,17 @@ function processData(data) {
         if (thisStep == currTimeStep) {
             
             spheres[currTimeStep].push(thisSphere);
-            
+
         } else {
             
             currTimeStep++;
             spheres.push([])
             spheres[currTimeStep].push(thisSphere);
+            currStepColor = vec3.fromValues(Math.random, Math.random, Math.random());
         }
+        
+        // reset color
+        spheres[currTimeStep][i].color = currStepColor;
         
     }
     
@@ -524,15 +530,17 @@ function handleKeys() {
     }
     
     if (currentlyPressedKeys[87]) {
-        Yangle -= inc;
+        // W
+        Xangle -= inc;
     } else if (currentlyPressedKeys[83]) {
-        Yangle += inc;
+        // S
+        Xangle += inc;
     }
     
     if (currentlyPressedKeys[81]) {
-        Xangle -= inc;
+        Yangle += inc;
     } else if (currentlyPressedKeys[69]) {
-        Xangle += inc;
+        Yangle -= inc;
     }
     
     if (currentlyPressedKeys[88]) {
@@ -619,44 +627,52 @@ function setupTerrainDraw() {
 
 function setupSpheresDraw() {
     
-    var which = 0;
-    for (var i = 0; i < spheres[which].length; i++){
-    
-        var transformVec = vec3.create(); // vector to move objects around
-        var scaleVec = vec3.create(); // scaling vector
+    for (var step = 0; step < 4; step++) { //spheres.length
+        
+        for (var i = 0; i < spheres[step].length; i++) {
 
-        // TODO: make for loop to render all the spheres each refresh frame
+            var transformVec = vec3.create(); // vector to move objects around
+            var scaleVec = vec3.create(); // scaling vector
 
-        // Set up light parameters
-        var Ia = vec3.fromValues(1.0,1.0,1.0); // ambient
-        var Id = vec3.fromValues(1.0,1.0,1.0); // diffuse
-        var Is = vec3.fromValues(1.0,1.0,1.0); // specular
+            // TODO: make for loop to render all the spheres each refresh frame
 
-        // Set up material parameters    
-        var ka = vec3.fromValues(0.0,0.0,0.0); // ambient
-//        var kd = vec3.fromValues(0.6,0.6,0.0); // diffuse
-        kd = spheres[which][i].color;
-        var ks = vec3.fromValues(1.0,1.0,1.0); // specular
+            // Set up light parameters
+            var Ia = vec3.fromValues(1.0,1.0,1.0); // ambient
+            var Id = vec3.fromValues(1.0,1.0,1.0); // diffuse
+            var Is = vec3.fromValues(1.0,1.0,1.0); // specular
 
-        mvPushMatrix(); // for matrix transformation
-//        vec3.set(transformVec, 0, 0, 0); // use this to set the position // +5 z?
-        mat4.translate(mvMatrix, mvMatrix, spheres[which][i].position);
+            // Set up material parameters    
+            var ka = vec3.fromValues(0.0,0.0,0.0); // ambient
+    //        var kd = vec3.fromValues(0.6,0.6,0.0); // diffuse
+            
+            kd = spheres[step][i].color;
+            
+            var ks = vec3.fromValues(1.0,1.0,1.0); // specular
 
-//        scaleFactor = 1.0;
-        scaleFactor = 10*spheres[which][i].radius;
-        vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
-        mat4.scale(mvMatrix, mvMatrix, scaleVec);
+            mvPushMatrix(); // for matrix transformation
+    //        vec3.set(transformVec, 0, 0, 0); // use this to set the position // +5 z?
+            
+            // scale down pos
+//            spheres[step][i].position[2] *= (20.0/2045.0);
+            
+            mat4.translate(mvMatrix, mvMatrix, spheres[step][i].position);
 
-    //    mat4.rotateX(mvMatrix, mvMatrix, degToRad(-55))
-    //    mat4.rotateY(mvMatrix, mvMatrix, degToRad(0))
-    //    mat4.rotateZ(mvMatrix, mvMatrix, degToRad(35))
+    //        scaleFactor = 1.0;
+            scaleFactor = 10*spheres[step][i].radius;
+            vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
+            mat4.scale(mvMatrix, mvMatrix, scaleVec);
 
-        uploadLightsToShader(lightPosEye,Ia,Id,Is);
-        uploadMaterialToShader(ka,kd,ks);
-        setMatrixUniforms();
-        drawSphere();
-        mvPopMatrix();
-    
+        //    mat4.rotateX(mvMatrix, mvMatrix, degToRad(-55))
+        //    mat4.rotateY(mvMatrix, mvMatrix, degToRad(0))
+        //    mat4.rotateZ(mvMatrix, mvMatrix, degToRad(35))
+
+            uploadLightsToShader(lightPosEye,Ia,Id,Is);
+            uploadMaterialToShader(ka,kd,ks);
+            setMatrixUniforms();
+            drawSphere();
+            mvPopMatrix();
+
+        }
     }
 }
 

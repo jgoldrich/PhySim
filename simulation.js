@@ -331,6 +331,7 @@ function startup() {
 
     // start with big bang
     var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
+    bigBang.color = vec3.fromValues(1,1,0); // set its color
     spheres.push(bigBang);
     
     tick(); // kick off the rendering and animation loop
@@ -341,6 +342,7 @@ function tick() {
     requestAnimFrame(tick); // update stuff
     handleKeys();
     draw();
+    
     animate();
 }
 
@@ -500,22 +502,52 @@ function setupSpheresDraw() {
 var ind = 0;
 function animate() {
 
-    var rad_scale = 5.0;
-    var temp_pos = vec3.create();
+    var rad_scale = 1.0;
     
-    for (var i = 0; i < spheres.length; i++) {
-        if (spheres.length > 1) break;
+    var currNumSpheres = spheres.length;
+    
+    for (var i = 0; i < currNumSpheres && currNumSpheres < 50; i++) {
         thisPos = spheres[i].position;
         thisRad = spheres[i].radius;
         
+        // plus-x
         var newRad = Math.random()*rad_scale;
-        vec3.add(temp_pos, thisPos, vec3.fromValues(thisRad+newRad, 0, 0));
-        pos_x = new Sphere(newRad, temp_pos);
+        var new_x_pos = vec3.create();
+        vec3.add(new_x_pos, thisPos, vec3.fromValues(thisRad+newRad, 0, 0));
+        pos_x = new Sphere(newRad, new_x_pos);
         spheres.push(pos_x);
+        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+        
+        // neg-x
+//        newRad = Math.random()*rad_scale;
+        var new_x_neg = vec3.create();
+        vec3.add(new_x_neg, thisPos, vec3.fromValues(-(thisRad+newRad), 0, 0));
+        neg_x = new Sphere(newRad, new_x_neg);
+        spheres.push(neg_x);
+        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+        
+        // pos-y
+//        newRad = Math.random()*rad_scale;
+        var new_y_pos = vec3.create();
+        vec3.add(new_y_pos, thisPos, vec3.fromValues(0, thisRad+newRad, 0));
+        pos_y = new Sphere(newRad, new_y_pos);
+        spheres.push(pos_y);
+        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+        
+        // neg-y
+//        newRad = Math.random()*rad_scale;
+        var new_y_neg = vec3.create();
+        vec3.add(new_y_neg, thisPos, vec3.fromValues(0, -(thisRad+newRad), 0));
+        neg_y = new Sphere(newRad, new_y_neg);
+        spheres.push(neg_y);
+        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+
         
     }
     
+    
+    
 //    spheres[0].position = vec3.fromValues(ind+=.1, 0, 0)
-    
-    
+       
 }
+

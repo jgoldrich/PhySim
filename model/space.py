@@ -87,7 +87,7 @@ class Space:
             self.masses[i].update(axis, V)
 #                if(state == -1):
 #                    self.destroy_mass(i)
-#            self.check_collissions()
+            self.check_collissions()
 """		
     def update2(self):
 

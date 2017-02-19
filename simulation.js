@@ -371,7 +371,7 @@ function loadData() {
     // load spheres at all time steps from csv
     $.ajax({
         type : "GET",
-        url : "data.csv",
+        url : "MOCK_DATA2.csv", // data
         dataType : "text"
     }).done(processData)//.done(processObj).done(startup());
     
@@ -685,8 +685,8 @@ var counter = 0;
 function animate() {
 
     counter++;
-    ind = Math.floor(counter / 100); // handles time stepping
-    ind = Math.min(spheres.length, ind);
+    ind = Math.floor(counter / 10); // handles time stepping
+    ind = Math.min(spheres.length-1, ind);
     
 //    var rad_scale = 1.0;
 //    

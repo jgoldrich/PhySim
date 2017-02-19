@@ -1,13 +1,15 @@
 from mass import Mass
 from photon import Photon
 import math
+import random
+from datetime import datetime
 
 class Space:
 	
     def __init__(self):
 		
         self.masses = list()
-		
+        random.seed(datetime.now())		
 	
     def createMass(self, mass, charge, parent_mass, x, y, z):
         """
@@ -36,10 +38,10 @@ class Space:
         Loops through the masses after we update to check if any of the masses are located in the same space.
         If there are objects in the same space then we will either merge or destroy the objects.
         """		
-		max_len = len(self.masses)
+        max_len = len(self.masses)
         for i in range(len(self.masses)):
-			if i >= max_len:
-				break
+            if i >= max_len:
+                break
             print("i = ", i)
             i = i-counter1
             mass1 = self.masses[i]
@@ -53,10 +55,10 @@ class Space:
                     destroy = True
                     if(destroy):
                         max_len -= 2
-						if(j-i>2):
-							counter2 += 2
-						else:
-                        	counter2 = counter2 + 1
+                        if(j-i>2):
+                            counter2 += 2
+                        else:
+                            counter2 = counter2 + 1
                         self.destroy_mass(j)
                         self.destroy_mass(i)
                     else:
@@ -73,8 +75,10 @@ class Space:
         for i in range(len(self.masses)):
             self.createMass(1, 1, self.masses[0], 0, 0, 1)        
             mass = self.masses[i]
-            if(mass.parent_mass.mass == 0):
-                state = mass.update()
+            axis = math.ceil(3*random.random())
+            if random.random() < 0.5:
+                axis = -1*axis
+            mass.update(axis)
 #                if(state == -1):
 #                    self.destroy_mass(i)
 #            self.check_collissions()

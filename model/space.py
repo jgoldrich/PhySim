@@ -43,7 +43,6 @@ class Space:
             if i >= max_len:
                 break
             print("i = ", i)
-            i = i-counter1
             mass1 = self.masses[i]
             counter2 = 0
             for j in range(i+1, len(self.masses)):

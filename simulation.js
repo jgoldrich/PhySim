@@ -410,6 +410,7 @@ function processData(data) {
         if (thisStep == currTimeStep) {
             
             spheres[currTimeStep].push(thisSphere);
+            
 
         } else {
             
@@ -420,7 +421,8 @@ function processData(data) {
         }
         
         // reset color
-        spheres[currTimeStep][i].color = currStepColor;
+        var currIndexInStep = spheres[currTimeStep].length-1;
+        spheres[currTimeStep][currIndexInStep].color = currStepColor;
         
     }
     
@@ -627,7 +629,7 @@ function setupTerrainDraw() {
 
 function setupSpheresDraw() {
     
-    for (var step = 0; step < 4; step++) { //spheres.length
+    for (var step = 0; step < spheres.length && step < 4; step++) { //spheres.length
         
         for (var i = 0; i < spheres[step].length; i++) {
 

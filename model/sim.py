@@ -1,7 +1,7 @@
 from photon import Photon
 from mass import Mass
 from space import Space
-from write import Write
+import numpy as np
 
 # par_dict is the dictionary of fundamental particles
 # 'name':[mass (eV/c^2), charge, spin]
@@ -26,6 +26,8 @@ if __name__ == '__main__':
     df = 100
     space = Space() 
     space.createMass(0, 0, None, 0, 0, 0)
+    f = open('data.csv', 'w')
+    f.close()
 
     for d in range(0,df):
         print(d)
@@ -33,7 +35,18 @@ if __name__ == '__main__':
         space.update()
         #Space.update()
 
-        
+        with open('data.csv', 'a') as f_out:
+            for i in range(len(space.masses)):
+                out = [d, space.masses[i].radius(),
+                        space.masses[i].location[0],
+                        space.masses[i].location[1],
+                        space.masses[i].location[2]]
+                #np.savetxt(f_out, out, delimiter=",")
+                for item in out:
+                    f_out.write(str(item))
+                    f_out.write(',')
+                f_out.write('\n')
+            
 
         if len(space.masses) > 1000:
             break

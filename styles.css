@@ -4,11 +4,22 @@ body {
     color: #FA6300;
     background-color: white;
     border-style: double;
+    border-color: #FA6300;
 }
-nav {
-    color: red;
-    background-color: white;
-} 
+h8 { <!--tabs for homepage-->
+    color: #FA6300;
+    word-spacing: 30px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    font-size: 26px;
+}
+h9 {
+	text-align: center;
+}
+
+h7 {
+    color: #FA6300; <!--name label-->
+}
 ul 
 {
     list-style-type:none;
@@ -18,7 +29,7 @@ ul
 h1 {
    margin-top: 10px;
    margin-bottom: 10px;
-   color: green;
+   color: #FA6300;
    font-size: 50px;
 }
 
@@ -31,10 +42,8 @@ h3 {
 h4 {
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-right: auto;
     font-size: 20px;
-    color: white;
-    width: 100%;
+    color: #FA6300;
 }
 
 h5 {
@@ -48,7 +57,7 @@ h5 {
 }
 
 .section {
-    width: 100%;
+    width: 90%;
     background-color: #131F33;
     border-radius: 5px;
     padding: 5px;

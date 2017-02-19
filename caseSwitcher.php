@@ -1,28 +1,33 @@
 <?php
+include("jakesFunction.js");
+echo("<head>");
+echo("<style>");
+echo("ul#menu li {");
+echo("display:inline;");
+echo("}");
+echo("</style>");
+$name = "title";
+echo("<div class=".$name."><h3>Physics Simulation 1 - JHacks 2017 - Team UIUC</h3></div>");
+$name = "utf-8";
+echo("<meta charset=".$name."> ");
+echo("</head>");
 
 echo("<nav>");
-echo("<ul>");
-echo("<li><strong>Home</strong></li>");
-$name = "caseSwitcher.php";
-    echo("<li><a href=".$name.">Switch this case</a></li>");
- $name = "Sim.html";
-   echo(" <li><a href=".$name.">Simulation 1</a></li>");
- $name = "Root.html";
-    echo("<li><a href=".$name.">Simulation 2</a></li>");
- $name = "Root.html";
-    echo("<li><a href=".$name.">Simulation 3</a></li>");
-  echo("</ul>");
+$name = "menu";
+echo("<ul id=".$name.">");
+$name = "SampleHTML.html";
+echo("<li><a href=".$name.">Home</a></li>");
+echo("<li><strong>Simulation 1 test</strong></li>");
+$name = "Sim2Page.html";
+echo("<li><a href=".$name.">Simulation 2</a></li>");
+$name = "Sim3Page.html";
+echo("<li><a href=".$name.">Simulation 3</a></li>");
+echo("</ul>");
 echo("</nav>");
 
-$num = doubleval($_POST['Visualizations']);
+$arg = "Sim1.csv";
 
-if($num == 1){
-	readfile("Sim.html");
-}else if($num == 2){
-	readfile("Sim2.html");
-}
-else if($num == 3){
-	echo("<h3>This is not the simulation you are looking for</h3>");
-}
+echo("<script>jakesFunction(".$arg.");</script>");
+readfile("Sim.html");
 
 ?>

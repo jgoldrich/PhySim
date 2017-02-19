@@ -3,14 +3,14 @@
 
 def Class Photon:
 
-    def __init__(self):
+    def __init__(self, mass):
 
         self.strong = true
-        self.em = false
+        self.em = 0
         self.weak = false
-        self.gravity = false
+        self.gravity = mass
         
-        self.tangest = false
+        self.tangent = false 
 
     def interact(self):
         

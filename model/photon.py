@@ -6,10 +6,10 @@ def Class Photon:
     def __init__(self, mass, tangent_mass, photon_num):
 
 
-        self.strong = true
+        self.strong = True
         self.em = 0
-        self.weak = false
-        self.gravity = mass
+        self.weak = False
+        self.gravity = mass.mass
         
         if tangent_mass == None:
             self.tangent = false 

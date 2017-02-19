@@ -8,11 +8,11 @@ def Class Space:
 		self.masses = list()
 		
 	
-	def createMass(self, par_dict, mass, charge, x, y, z):
+	def createMass(self, mass, charge, parent_mass, x, y, z):
 		"""
 			inserts new Masses into the masses list
 		"""
-		masses.insert(0, Mass(par_dict, mass, charge, x, y, z))
+		masses.insert(0, Mass(mass, charge, parent_mass, x, y, z))
 		
 
 	def destroy_mass(self, index):
@@ -27,7 +27,7 @@ def Class Space:
 		"""
 		for i in len(self.masses):
 			mass = self.masses[i]
-			if(mass.parent_mass == 0):
+			if(mass.parent_mass.mass == 0):
 				state = mass.update()
 			if(state == -1):
 				destroy_mass(i)

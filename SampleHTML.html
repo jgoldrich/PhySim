@@ -1,33 +1,28 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="styles.css">
 <link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
 
 <head>
-  <div class="title"><h1>PhySim's main website page</h1></div>
+	<style>
+	ul#menu li {
+		display:inline;
+	}
+	</style>
+
+  <div class="title"><h3>PhySim's main website page</h3></div>
     <div class="section">
-    <h4>This website simulates what a photon sees by using spheres of differing sizes to model objects of different masses.</h4>
+		<h4>This website simulates what a photon sees by using spheres of differing sizes to model objects of different masses.</h4>
     </div>
 </head>
 
-<nav>
-  <ul>
-    <li><strong>Home</strong></li>
-    <li><a href="caseSwitcher.php">Switch this case</a></li>
-    <li><a href="Sim1Page.html">Simulation 1</a></li>
-    <li><a href="Sim2Page.html">Simulation 2</a></li>
-    <li><a href="Sim3Page.html">Simulation 3</a></li>
-  </ul>
-</nav>
-
-<body>	
-	<div class="section">
-	<form method = "post" action="caseSwitcher.php">
-		Pick visualization type:<br>
-		<select name="Visualizations">
-		<option value="1">Sim1</option>
-		<option value="2">Sim2</option>
-		<option value="3">Sim3</option>
-		<input type="submit" value="Enter">
-	</form>
-	</div>
+<body>
+	<nav>
+	  <ul id="menu">
+		<li><strong>Home</strong></li>
+		<li><a href="caseSwitcher.php">Switch this case</a></li>
+		<li><a href="Sim1Page.html">Simulation 1</a></li>
+		<li><a href="Sim2Page.html">Simulation 2</a></li>
+		<li><a href="Sim3Page.html">Simulation 3</a></li>
+	  </ul>
+	</nav>
 </body>

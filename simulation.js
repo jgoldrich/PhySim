@@ -11,6 +11,15 @@ var vertexPositionBuffer;
 var sphereVertexPositionBuffer; // Create a place to store sphere geometry
 var sphereVertexNormalBuffer; // Create a place to store normals for shading
 
+
+///////// try with obj
+var vSphere = [];
+var nSphere = [];
+var fSphere = [];
+
+var sphereIndexTriBuffer;
+////////
+
 // plane base geom
 var tVertexPositionBuffer; // Create a place to store terrain geometry
 var tVertexNormalBuffer; // Create a place to store normals for shading
@@ -31,7 +40,13 @@ var pMatrix = mat4.create(); //Create Projection matrix
 var mvMatrixStack = []; // setup matrix stack for transformations
 
 // Preliminary array of spheres to just hold them - eventually move to a (KD?) tree for collision checking efficiently, etc.
+<<<<<<< HEAD
+var spheres = [[]]; // array OF sphere arrays - for each time step. dimension is txnx4
+
+var raw_sphere_data = [];
+=======
 spheres = [];
+>>>>>>> refs/remotes/origin/master
 
 
 /* =================================BUFFERS AND DRAW SETUP================================= */
@@ -39,6 +54,45 @@ spheres = [];
 // sphere buffer
 function setupSphereBuffers() {
     
+<<<<<<< HEAD
+//    var sphereSoup=[];
+//    var sphereNormals=[];
+//    var numT=sphereFromSubdivision(6,sphereSoup,sphereNormals);
+//    console.log(numT);
+//    sphereVertexPositionBuffer = gl.createBuffer(); // initialize buffer to hold the vertices of the sphere
+//    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer); // set the sphere vertices as a buffer
+//    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphereSoup), gl.STATIC_DRAW); // load the sphere vertices buffer with the data
+//    sphereVertexPositionBuffer.itemSize = 3; // 3 vertices per triangle
+//    sphereVertexPositionBuffer.numItems = numT*3; // number of vertices
+//    
+//    // Specify normals to be able to do lighting calculations
+//    sphereVertexNormalBuffer = gl.createBuffer(); // initialize vertex normal buffer - for shading
+//    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer); // set as a buffer
+//    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphereNormals), gl.STATIC_DRAW); // load up the buffer
+//    sphereVertexNormalBuffer.itemSize = 3;
+//    sphereVertexNormalBuffer.numItems = numT*3;
+    
+    // specify veritces
+    sphereVertexPositionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer);   
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vSphere), gl.STATIC_DRAW);
+    sphereVertexPositionBuffer.itemSize = 3;
+    sphereVertexPositionBuffer.numItems = vSphere.length/3;
+    
+    // Specify normals to be able to do lighting calculations - uncomment after calculating normals
+    sphereVertexNormalBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(nSphere), gl.STATIC_DRAW);
+    sphereVertexNormalBuffer.itemSize = 3;
+    sphereVertexNormalBuffer.numItems = nSphere.length/3; // ?
+    
+    // Specify faces of the teapot 
+    sphereIndexTriBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereIndexTriBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(fSphere), gl.STATIC_DRAW);
+    sphereIndexTriBuffer.itemSize = 1;
+    sphereIndexTriBuffer.numItems = fSphere.length; // ?
+=======
     var sphereSoup=[];
     var sphereNormals=[];
     var numT=sphereFromSubdivision(6,sphereSoup,sphereNormals);
@@ -54,6 +108,7 @@ function setupSphereBuffers() {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphereNormals), gl.STATIC_DRAW); // load up the buffer
     sphereVertexNormalBuffer.itemSize = 3;
     sphereVertexNormalBuffer.numItems = numT*3;
+>>>>>>> refs/remotes/origin/master
     
 }
 
@@ -65,7 +120,11 @@ function setupTerrainBuffers() {
     var nTerrain=[]; // normals
     var eTerrain=[]; // edges
     
+<<<<<<< HEAD
+    var n = 5; // change size of the plane // was 5
+=======
     var n = 5; // change size of the plane
+>>>>>>> refs/remotes/origin/master
     var dim = Math.pow(2, n) + 1; // terrain is even 2^n + 1 by 2^n + 1 grid
     
     var numT = terrainFromIteration(n, dim, -1,1,-1,1, vTerrain, fTerrain, nTerrain); // TODO: change this function to change the fTerrain coords
@@ -102,6 +161,32 @@ function setupTerrainBuffers() {
 // draw a sphere
 function drawSphere() {
     
+<<<<<<< HEAD
+//    // bind vertex pos buffer
+//    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer); // set the vertex position buffer as a buffer - need? already bound in setup
+//    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, sphereVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0); // setup the aVertexPosition attribute in the shader to point to the buffer containing the vertex position data
+//
+//    // Bind normal buffer
+//    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer);
+//    gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, sphereVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+//    
+//    gl.drawArrays(gl.TRIANGLES, 0, sphereVertexPositionBuffer.numItems);   
+    
+    gl.polygonOffset(0,0);
+    
+ // bind vertex buffer
+ gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer);
+ gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, sphereVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+ // Bind normal buffer - uncomment soon
+ gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer);
+ gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, sphereVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);   
+    
+ // Draw 
+ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereIndexTriBuffer);
+ gl.drawElements(gl.TRIANGLES, sphereIndexTriBuffer.numItems, gl.UNSIGNED_SHORT,0);   // issue with unsigned short? // check the buffer
+    
+=======
     // bind vertex pos buffer
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer); // set the vertex position buffer as a buffer - need? already bound in setup
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, sphereVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0); // setup the aVertexPosition attribute in the shader to point to the buffer containing the vertex position data
@@ -111,6 +196,7 @@ function drawSphere() {
     gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, sphereVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
     
     gl.drawArrays(gl.TRIANGLES, 0, sphereVertexPositionBuffer.numItems);      
+>>>>>>> refs/remotes/origin/master
 }
 
 // draw the plane
@@ -318,6 +404,122 @@ function setupBuffers() {
     setupTerrainBuffers();
 }
 
+<<<<<<< HEAD
+
+function loadData() {
+    
+    // load spheres at all time steps from csv
+    $.ajax({
+        type : "GET",
+        url : "500_steps.csv",//dummy_100steps.csv", // data "1000_steps_denser.csv",// "working_tangents.csv"
+        dataType : "text"
+    }).done(processData)//.done(processObj).done(startup());
+    
+    // load sphere geom from obj
+    $.get("sphere.obj", function(data) {
+            processObj(data);
+    }).done(function(){startup()});
+    
+}
+
+function processData(data) {
+    
+    // start with big bang
+//    var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
+//    bigBang.color = vec3.fromValues(1,1,0); // set its color
+//    spheres.push(bigBang);
+//    console.log(data);
+    
+    var allRows = data.split(/\r?\n|\r/); // regex from stack overflow
+//    console.log(allRows);
+    
+    var currTimeStep = 0;
+      
+    var currStepColor = vec3.fromValues(Math.random(), Math.random(), Math.random());
+    
+    // parse all the rows
+    for (var i = 0; i < allRows.length && currTimeStep < 300; i++) {
+        
+        var currState = allRows[i].split(",");
+        var thisRad = parseFloat(currState[1]);
+        var thisPos = vec3.fromValues(parseFloat(currState[2]), parseFloat(currState[3]), parseFloat(currState[4]));
+        var thisSphere = new Sphere(thisRad, thisPos);
+        
+        var thisStep = currState[0];
+        
+        if (thisStep == currTimeStep) {
+            
+            spheres[currTimeStep].push(thisSphere);
+            
+
+        } else {
+            
+            currTimeStep++;
+            spheres.push([])
+            spheres[currTimeStep].push(thisSphere);
+            currStepColor = vec3.fromValues(Math.random(), Math.random(), Math.random());
+        }
+        
+        // reset color
+        var currIndexInStep = spheres[currTimeStep].length-1;
+        spheres[currTimeStep][currIndexInStep].color = currStepColor;
+        
+    }
+    
+    return;
+//    console.log('processed data');
+    
+//    console.log(spheres);
+//    startup();
+
+}
+
+function processObj(data) {
+
+    var lines = data.split("\n");
+    
+    for (var i = 0; i < lines.length; i++) {
+        var currLine = lines[i];
+        var currLineSplit = currLine.split(" ");
+        
+        var type = currLineSplit[0];
+        
+        if (type == "v") {
+            vSphere.push(currLineSplit[2]);
+            vSphere.push(currLineSplit[3]);
+            vSphere.push(currLineSplit[4]);
+            
+            // calculate normals as just the normalized coordinate
+            var normal = vec3.fromValues(currLineSplit[2], currLineSplit[3], currLineSplit[4]);
+            vec3.normalize(normal, normal);
+            
+            nSphere.push(normal[0]);
+            nSphere.push(normal[1]);
+            nSphere.push(normal[2]);
+            
+        } else if (type == "f") {
+            // remember to subtract by 1 to account for being 1-indexed instead of 0 for the verts
+            var face1s = currLineSplit[1].split("/");
+            fSphere.push(face1s[0]-1);
+            
+            var face2s = currLineSplit[3].split("/");
+            fSphere.push(face2s[0]-1);
+            
+            var face3s = currLineSplit[5].split("/");
+            fSphere.push(face3s[0]-1);
+            
+        }
+    }
+    
+//    // start with big bang
+//    var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
+//    bigBang.color = vec3.fromValues(1,1,0); // set its color
+//    spheres.push(bigBang);
+    
+}
+
+=======
+>>>>>>> refs/remotes/origin/master
 // function called from the body onload
 function startup() {
     canvas = document.getElementById("myGLCanvas");
@@ -328,11 +530,17 @@ function startup() {
     gl.enable(gl.DEPTH_TEST);
     document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;
+<<<<<<< HEAD
+    
+    // parse csv here
+    // jquery to force it to wait til done?
+=======
 
     // start with big bang
     var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
     bigBang.color = vec3.fromValues(1,1,0); // set its color
     spheres.push(bigBang);
+>>>>>>> refs/remotes/origin/master
     
     tick(); // kick off the rendering and animation loop
 }
@@ -362,8 +570,14 @@ function handleKeyUp(event) {
 var Zangle = 0.0;
 var Yangle = 0.0;
 var Xangle = 0.0;
+<<<<<<< HEAD
+depth = 70.0;
+function handleKeys() {
+    inc = 0.75
+=======
 function handleKeys() {
     inc = 0.50
+>>>>>>> refs/remotes/origin/master
     if (currentlyPressedKeys[65]) {
         // A
         Zangle += inc;
@@ -373,6 +587,27 @@ function handleKeys() {
     }
     
     if (currentlyPressedKeys[87]) {
+<<<<<<< HEAD
+        // W
+        Xangle -= inc;
+    } else if (currentlyPressedKeys[83]) {
+        // S
+        Xangle += inc;
+    }
+    
+    if (currentlyPressedKeys[81]) {
+        Yangle += inc;
+    } else if (currentlyPressedKeys[69]) {
+        Yangle -= inc;
+    }
+    
+    if (currentlyPressedKeys[88]) {
+        // X
+        depth -= inc;
+    } else if (currentlyPressedKeys[90]) {
+        // Z
+        depth += inc;
+=======
         Yangle -= inc;
     } else if (currentlyPressedKeys[83]) {
         Yangle += inc;
@@ -382,6 +617,7 @@ function handleKeys() {
         Xangle -= inc;
     } else if (currentlyPressedKeys[69]) {
         Xangle += inc;
+>>>>>>> refs/remotes/origin/master
     }
     
 }
@@ -397,6 +633,11 @@ function draw() {
     // We'll use perspective projection
     mat4.perspective(pMatrix,degToRad(45), gl.viewportWidth / gl.viewportHeight, 0.1, 200.0);
 
+<<<<<<< HEAD
+    var eyePt = vec3.fromValues(0.0,0.0,depth);
+    
+=======
+>>>>>>> refs/remotes/origin/master
     // We want to look down -z, so create a lookat point in that direction    
     vec3.add(viewPt, eyePt, viewDir);
     
@@ -414,9 +655,24 @@ function draw() {
     
     setupTerrainDraw();
     setupSpheresDraw();
+<<<<<<< HEAD
+    
+    // put text on here at the bottom of the screen
+    drawText();
   
 }
 
+function drawText() {
+    
+    
+    
+}
+
+=======
+  
+}
+
+>>>>>>> refs/remotes/origin/master
 function setupTerrainDraw() {
     var transformVec = vec3.create(); // vector to move objects around
     var scaleVec = vec3.create(); // scaling vector
@@ -458,6 +714,18 @@ function setupTerrainDraw() {
 
 function setupSpheresDraw() {
     
+<<<<<<< HEAD
+    // this 2D for loop will draw all, but want to draw the appropriate time step depending on the actual time
+        
+    var RED = vec3.fromValues(1.0, 0.0, 0.0);
+    var BLUE = vec3.fromValues(0.0, 0.0, 1.0);
+    
+    for (var i = 0; i < spheres[ind].length; i++) {
+
+        var transformVec = vec3.create(); // vector to move objects around
+        var scaleVec = vec3.create(); // scaling vector
+
+=======
     for (var i = 0; i < spheres.length; i++){
     
         var transformVec = vec3.create(); // vector to move objects around
@@ -465,6 +733,7 @@ function setupSpheresDraw() {
 
         // TODO: make for loop to render all the spheres each refresh frame
 
+>>>>>>> refs/remotes/origin/master
         // Set up light parameters
         var Ia = vec3.fromValues(1.0,1.0,1.0); // ambient
         var Id = vec3.fromValues(1.0,1.0,1.0); // diffuse
@@ -473,15 +742,53 @@ function setupSpheresDraw() {
         // Set up material parameters    
         var ka = vec3.fromValues(0.0,0.0,0.0); // ambient
 //        var kd = vec3.fromValues(0.6,0.6,0.0); // diffuse
+<<<<<<< HEAD
+
+        kd = spheres[ind][i].color;
+        
+        // recalculate the color as a blend beween red and blue (hot to cold temp) as a function of distance from origin
+        var pos = spheres[ind][i].position;
+        var dist = Math.sqrt(Math.pow(pos[0], 2) + Math.pow(pos[1], 2) + Math.pow(pos[2], 2));
+        
+        var newc = vec3.create();
+        vec3.scale(newc, RED, dist*25.0);
+//        kd = newc;
+//        
+//        var blue_minus_red = vec3.create();
+//        vec3.subtract(blue_minus_red, BLUE, RED);
+//        vec3.scale(blue_minus_red, blue_minus_red, dist);
+//        vec3.add(blue_minus_red, blue_minus_red, RED);
+//        
+//        vec3.normalize(blue_minus_red, blue_minus_red);
+//        for (var j = 0; j < 3; j++) {
+//            blue_minus_red[j] = Math.abs(blue_minus_red[j]);
+//        }
+//        
+//        kd = blue_minus_red;
+        //
+
+=======
         kd = spheres[i].color;
+>>>>>>> refs/remotes/origin/master
         var ks = vec3.fromValues(1.0,1.0,1.0); // specular
 
         mvPushMatrix(); // for matrix transformation
 //        vec3.set(transformVec, 0, 0, 0); // use this to set the position // +5 z?
+<<<<<<< HEAD
+
+        // scale down pos
+//            spheres[step][i].position[2] *= (20.0/2045.0);
+
+        mat4.translate(mvMatrix, mvMatrix, spheres[ind][i].position);
+
+//        scaleFactor = 1.0;
+        scaleFactor = 10*spheres[ind][i].radius;
+=======
         mat4.translate(mvMatrix, mvMatrix, spheres[i].position);
 
 //        scaleFactor = 1.0;
         scaleFactor = spheres[i].radius;
+>>>>>>> refs/remotes/origin/master
         vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
         mat4.scale(mvMatrix, mvMatrix, scaleVec);
 
@@ -494,12 +801,82 @@ function setupSpheresDraw() {
         setMatrixUniforms();
         drawSphere();
         mvPopMatrix();
+<<<<<<< HEAD
+
+=======
     
+>>>>>>> refs/remotes/origin/master
     }
 }
 
 // update positions of the spheres here?
 var ind = 0;
+<<<<<<< HEAD
+var counter = 0;
+function animate() {
+
+    if (document.getElementById("animate").checked) {
+        counter++;
+        var speed = document.getElementById("speed").value;
+        ind = Math.floor(counter / speed); // handles time stepping
+        
+        if (ind > spheres.length-1) {
+            ind = 0;
+            counter = 0;
+        }
+        
+        //ind = Math.min(spheres.length-1, ind);
+        
+
+    } else if (document.getElementById("pause").checked) {
+        var ts = document.getElementById("ts").value;
+        ind = ts;
+    }
+    
+//    var rad_scale = 1.0;
+//    
+//    var currNumSpheres = spheres.length;
+//    
+//    for (var i = 0; i < currNumSpheres && currNumSpheres < 50; i++) {
+//        thisPos = spheres[i].position;
+//        thisRad = spheres[i].radius;
+//        
+//        // plus-x
+//        var newRad = Math.random()*rad_scale;
+//        var new_x_pos = vec3.create();
+//        vec3.add(new_x_pos, thisPos, vec3.fromValues(thisRad+newRad, 0, 0));
+//        pos_x = new Sphere(newRad, new_x_pos);
+//        spheres.push(pos_x);
+//        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+//        
+//        // neg-x
+////        newRad = Math.random()*rad_scale;
+//        var new_x_neg = vec3.create();
+//        vec3.add(new_x_neg, thisPos, vec3.fromValues(-(thisRad+newRad), 0, 0));
+//        neg_x = new Sphere(newRad, new_x_neg);
+//        spheres.push(neg_x);
+//        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+//        
+//        // pos-y
+////        newRad = Math.random()*rad_scale;
+//        var new_y_pos = vec3.create();
+//        vec3.add(new_y_pos, thisPos, vec3.fromValues(0, thisRad+newRad, 0));
+//        pos_y = new Sphere(newRad, new_y_pos);
+//        spheres.push(pos_y);
+//        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+//        
+//        // neg-y
+////        newRad = Math.random()*rad_scale;
+//        var new_y_neg = vec3.create();
+//        vec3.add(new_y_neg, thisPos, vec3.fromValues(0, -(thisRad+newRad), 0));
+//        neg_y = new Sphere(newRad, new_y_neg);
+//        spheres.push(neg_y);
+//        spheres[spheres.length-1].color = vec3.fromValues(Math.random(), Math.random(), Math.random());
+//
+//        
+//    }
+    
+=======
 function animate() {
 
     var rad_scale = 1.0;
@@ -545,9 +922,19 @@ function animate() {
         
     }
     
+>>>>>>> refs/remotes/origin/master
     
     
 //    spheres[0].position = vec3.fromValues(ind+=.1, 0, 0)
        
 }
 
+<<<<<<< HEAD
+function restart() {
+    ind = 0;
+    counter = 0;
+}
+
+
+=======
+>>>>>>> refs/remotes/origin/master

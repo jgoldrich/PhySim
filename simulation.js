@@ -39,7 +39,7 @@ var pMatrix = mat4.create(); //Create Projection matrix
 var mvMatrixStack = []; // setup matrix stack for transformations
 
 // Preliminary array of spheres to just hold them - eventually move to a (KD?) tree for collision checking efficiently, etc.
-var spheres = [];
+var spheres = [[]]; // array OF sphere arrays - for each time step. dimension is txnx4
 
 var raw_sphere_data = [];
 
@@ -371,7 +371,7 @@ function loadData() {
     // load spheres at all time steps from csv
     $.ajax({
         type : "GET",
-        url : "dummy_data.csv",
+        url : "data.csv",
         dataType : "text"
     }).done(processData)//.done(processObj).done(startup());
     
@@ -385,26 +385,40 @@ function loadData() {
 function processData(data) {
     
     // start with big bang
-    var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
-    bigBang.color = vec3.fromValues(1,1,0); // set its color
-    spheres.push(bigBang);
+//    var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
+//    bigBang.color = vec3.fromValues(1,1,0); // set its color
+//    spheres.push(bigBang);
 //    console.log(data);
     
     var allRows = data.split(/\r?\n|\r/); // regex from stack overflow
 //    console.log(allRows);
     
+    var currTimeStep = 0;
+    
+    // parse all the rows
     for (var i = 0; i < allRows.length; i++) {
         
         var currState = allRows[i].split(",");
-        
-        var thisRad = parseFloat(currState[0]);
-        var thisPos = vec3.fromValues(parseFloat(currState[1]), parseFloat(currState[2]), parseFloat(currState[3]));
-//        console.log(thisPos);
+        var thisRad = parseFloat(currState[1]);
+        var thisPos = vec3.fromValues(parseFloat(currState[2]), parseFloat(currState[3]), parseFloat(currState[4]));
         var thisSphere = new Sphere(thisRad, thisPos);
-        spheres.push(thisSphere);
+        
+        var thisStep = currState[0];
+        
+        if (thisStep == currTimeStep) {
+            
+            spheres[currTimeStep].push(thisSphere);
+            
+        } else {
+            
+            currTimeStep++;
+            spheres.push([])
+            spheres[currTimeStep].push(thisSphere);
+        }
         
     }
     
+    return;
 //    console.log('processed data');
     
 //    console.log(spheres);
@@ -498,6 +512,7 @@ function handleKeyUp(event) {
 var Zangle = 0.0;
 var Yangle = 0.0;
 var Xangle = 0.0;
+depth = 70.0;
 function handleKeys() {
     inc = 0.50
     if (currentlyPressedKeys[65]) {
@@ -520,6 +535,14 @@ function handleKeys() {
         Xangle += inc;
     }
     
+    if (currentlyPressedKeys[88]) {
+        // X
+        depth -= inc;
+    } else if (currentlyPressedKeys[90]) {
+        // Z
+        depth += inc;
+    }
+    
 }
 
 /* =================================RENDERING================================= */
@@ -533,6 +556,8 @@ function draw() {
     // We'll use perspective projection
     mat4.perspective(pMatrix,degToRad(45), gl.viewportWidth / gl.viewportHeight, 0.1, 200.0);
 
+    var eyePt = vec3.fromValues(0.0,0.0,depth);
+    
     // We want to look down -z, so create a lookat point in that direction    
     vec3.add(viewPt, eyePt, viewDir);
     
@@ -594,7 +619,8 @@ function setupTerrainDraw() {
 
 function setupSpheresDraw() {
     
-    for (var i = 0; i < spheres.length; i++){
+    var which = 0;
+    for (var i = 0; i < spheres[which].length; i++){
     
         var transformVec = vec3.create(); // vector to move objects around
         var scaleVec = vec3.create(); // scaling vector
@@ -609,15 +635,15 @@ function setupSpheresDraw() {
         // Set up material parameters    
         var ka = vec3.fromValues(0.0,0.0,0.0); // ambient
 //        var kd = vec3.fromValues(0.6,0.6,0.0); // diffuse
-        kd = spheres[i].color;
+        kd = spheres[which][i].color;
         var ks = vec3.fromValues(1.0,1.0,1.0); // specular
 
         mvPushMatrix(); // for matrix transformation
 //        vec3.set(transformVec, 0, 0, 0); // use this to set the position // +5 z?
-        mat4.translate(mvMatrix, mvMatrix, spheres[i].position);
+        mat4.translate(mvMatrix, mvMatrix, spheres[which][i].position);
 
 //        scaleFactor = 1.0;
-        scaleFactor = 10*spheres[i].radius;
+        scaleFactor = 10*spheres[which][i].radius;
         vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
         mat4.scale(mvMatrix, mvMatrix, scaleVec);
 

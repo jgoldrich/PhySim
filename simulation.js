@@ -31,7 +31,9 @@ var pMatrix = mat4.create(); //Create Projection matrix
 var mvMatrixStack = []; // setup matrix stack for transformations
 
 // Preliminary array of spheres to just hold them - eventually move to a (KD?) tree for collision checking efficiently, etc.
-spheres = [];
+var spheres = [];
+
+var raw_sphere_data = [];
 
 
 /* =================================BUFFERS AND DRAW SETUP================================= */
@@ -318,6 +320,58 @@ function setupBuffers() {
     setupTerrainBuffers();
 }
 
+
+function loadData() {
+
+//    $.get("file.csv", function (data) {
+//        processData(data);
+//    }).done( function() { 
+//        startup(); 
+//    })
+    
+//    $.ajax({
+//        url: "dummy_data.csv",
+//        dataType: "text"
+//    }).done(processData);
+    
+    $.ajax({
+            type : "GET",
+            url : "dummy_data.csv",
+            dataType : "text"
+        }).done(processData);
+
+    
+}
+
+function processData(data) {
+
+    // start with big bang
+    var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
+    bigBang.color = vec3.fromValues(1,1,0); // set its color
+    spheres.push(bigBang);
+//    console.log(data);
+    
+    var allRows = data.split(/\r?\n|\r/); // regex from stack overflow
+    console.log(allRows);
+    
+    for (var i = 0; i < allRows.length; i++) {
+        
+        var currState = allRows[i].split(",");
+        
+        var thisRad = parseFloat(currState[0]);
+        var thisPos = vec3.fromValues(parseFloat(currState[1]), parseFloat(currState[2]), parseFloat(currState[3]));
+        console.log(thisPos);
+        var thisSphere = new Sphere(thisRad, thisPos);
+        spheres.push(thisSphere);
+        
+    }
+    
+    console.log(spheres);
+    
+    startup();
+    
+}
+
 // function called from the body onload
 function startup() {
     canvas = document.getElementById("myGLCanvas");
@@ -328,11 +382,9 @@ function startup() {
     gl.enable(gl.DEPTH_TEST);
     document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;
-
-    // start with big bang
-    var bigBang = new Sphere(1, vec3.fromValues(0,0,5));
-    bigBang.color = vec3.fromValues(1,1,0); // set its color
-    spheres.push(bigBang);
+    
+    // parse csv here
+    // jquery to force it to wait til done?
     
     tick(); // kick off the rendering and animation loop
 }

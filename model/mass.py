@@ -21,7 +21,7 @@ class Mass:
 
         if mass == 0:
             self.a = [0, 0, 0, 0, 0, 0]
-            self.location = [0., 0., 0.]
+            self.location = np.array([0., 0., 0.])
             pass
 
             # then is the infinite radius sphere
@@ -29,11 +29,11 @@ class Mass:
             #do something
         elif parent_mass.mass == 0:
             self.a = np.array([0, 1, 2, 3, 4, 5])
-            self.location = [x, y, z]
+            self.location = np.array([x, y, z])
         else:
             self.a = np.array([0, 1, 2, 3, 4, 5])
-            self.location = self.parent_mass.location
-            #self.location[2] += self.radius() + self.parent_mass.radius()
+            self.location = np.array(self.parent_mass.location)
+            self.location[2] += self.radius() + self.parent_mass.radius()
 		
         # Define the 6 photon-grid on sphere surface
         self.photons = []
@@ -47,7 +47,7 @@ class Mass:
         """
         radius = math.pow( self.mass, 1/3)
 
-        return radius
+        return float(radius)
 
     def transform(self, axis, count):
         """ 

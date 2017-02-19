@@ -1,6 +1,7 @@
 from photon import Photon
 from mass import Mass
 from space import Space
+from write import Write
 
 # par_dict is the dictionary of fundamental particles
 # 'name':[mass (eV/c^2), charge, spin]
@@ -24,10 +25,16 @@ if __name__ == '__main__':
 
     df = 100
     space = Space() 
+    space.createMass(0, 0, None, 0, 0, 0)
 
     for d in range(0,df):
-
-        pass
+        print(d)
+        print(len(space.masses))
+        space.update()
         #Space.update()
 
+        
 
+        if len(space.masses) > 1000:
+            break
+    

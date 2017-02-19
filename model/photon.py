@@ -1,7 +1,7 @@
 import interactLaw as iL
 
 
-def Class Photon:
+class Photon:
 
     def __init__(self, mass, tangent_mass, photon_num):
 
@@ -10,17 +10,14 @@ def Class Photon:
         self.em = 0
         self.weak = False
         self.gravity = mass.mass
+        self.photon_num = photon_num
+        
+        self.mass = mass
         
         if tangent_mass == None:
-            self.tangent = false 
+            self.tangent = False 
         else:
-            self.tangent = true
+            self.tangent = True
             self.tangent_mass = tangent_mass
             self.tangent_photon = tangent_mass.photons[photon_num]
 
-
-    def interact(self):
-        
-        if self.tangent == true:
-
-        

@@ -6,13 +6,18 @@ from sets import Set
 
 def Class Mass:
 
-    def __init__(self, mass):
-    
+    def __init__(self, par_dict, mass, charge):
+    """ 
+        inputs: 
+        mass (particle, at initialization)
+        charge (particle, at initialization)
+
+    """
         self.mass = mass
+        self.charge = charge
         self.a = np.array([0, 1, 2, 3, 4, 5])
 
     def transform(self, axis):
-    
     """ 
         Performs the rotation transformation on photon array
         inputs: axis (element of [-3 -2 -1 1 2 3])

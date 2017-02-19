@@ -339,7 +339,7 @@ function draw() {
     lightPosEye4 = vec4.transformMat4(lightPosEye4,lightPosEye4,mvMatrix);
     lightPosEye = vec3.fromValues(lightPosEye4[0],lightPosEye4[1],lightPosEye4[2]);
     
-//    setupTerrainDraw();
+    setupTerrainDraw();
     setupSpheresDraw();
   
 }
@@ -354,21 +354,21 @@ function setupTerrainDraw() {
     var Is = vec3.fromValues(1.0,1.0,1.0); // specular
 
     // Set up material parameters    
-    var ka = vec3.fromValues(0.0,0.0,1.0); // ambient
-    var kd = vec3.fromValues(0.0,1.0,1.0); // diffuse
-    var ks = vec3.fromValues(1.0,0.0,0.0); // specular
+    var ka = vec3.fromValues(1.0,1.0,1.0); // ambient
+    var kd = vec3.fromValues(0.0,0.0,0.0); // diffuse
+    var ks = vec3.fromValues(0.0,0.0,0.0); // specular
 
     mvPushMatrix(); // for matrix transformation
-//    vec3.set(transformVec, 0, 0, 0) // use this to set the position
-//    mat4.translate(mvMatrix, mvMatrix, transformVec);
+    vec3.set(transformVec, 0, -10, 25) // use this to set the position
+    mat4.translate(mvMatrix, mvMatrix, transformVec);
 
-    scaleFactor = 10.0
+    scaleFactor = 15.0
     vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
     mat4.scale(mvMatrix, mvMatrix, scaleVec);
     
-//    mat4.rotateX(mvMatrix, mvMatrix, degToRad(-55))
+    mat4.rotateX(mvMatrix, mvMatrix, degToRad(-65))
 //    mat4.rotateY(mvMatrix, mvMatrix, degToRad(0))
-//    mat4.rotateZ(mvMatrix, mvMatrix, degToRad(35))
+    mat4.rotateZ(mvMatrix, mvMatrix, degToRad(35))
 
     uploadLightsToShader(lightPosEye,Ia,Id,Is);
     uploadMaterialToShader(ka,kd,ks);
@@ -394,10 +394,10 @@ function setupSpheresDraw() {
     var ks = vec3.fromValues(1.0,1.0,1.0); // specular
 
     mvPushMatrix(); // for matrix transformation
-    vec3.set(transformVec, 0, 0, 0) // use this to set the position
+    vec3.set(transformVec, 0, 10, 20) // use this to set the position
     mat4.translate(mvMatrix, mvMatrix, transformVec);
 
-    scaleFactor = 10.0
+    scaleFactor = 1.0
     vec3.set(scaleVec, scaleFactor, scaleFactor, scaleFactor); // use this to set the scale
     mat4.scale(mvMatrix, mvMatrix, scaleVec);
     

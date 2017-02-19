@@ -22,7 +22,7 @@
   </ul>
 </nav>
 
-    <!-- Vertex Shader-->
+  <!-- Vertex Shader-->
     <script id="shader-vs" type="x-shader/x-vertex">
        attribute vec3 aVertexNormal;
        attribute vec3 aVertexPosition;
@@ -96,15 +96,35 @@
          }
     </script>
 
-    <script src="gl-matrix-min.js"></script> 
-    <script src="webgl-utils.js"></script>
-    <script src="simpleModeling.js"></script>  
-    <script src="simulation.js"></script>   
-    <script src="jquery-3.1.1.min.js"></script>  
-    <script src="terrain.js"></script>
+    <script src="old_sim/gl-matrix-min.js"></script> 
+    <script src="old_sim/webgl-utils.js"></script>
+    <script src="old_sim/simpleModeling.js"></script>  
+    <script src="old_sim/simulation.js"></script>   
+    <script src="old_sim/jquery-3.1.1.min.js"></script>
+    <script src="old_sim/terrain.js"></script>
+    <script src="old_sim/Sphere.js"></script>
+    <scrtip src="jquery.csv.js"></scrtip>
 
-    <body onload="startup();">
-        <canvas id="myGLCanvas" width="800" height="600"></canvas>
+    <body onload="loadData();">
+        <canvas id="myGLCanvas" width="800" height="600"></canvas> <br/>
+        <button type="button" id="add" onclick="restart();">Restart</button>
+        
+        <form method="post" action="demoform.asp">
+            <label for="points">Speed</label>
+            <input style="margin-right: 50px;" type="range" name="speed" id="speed" value="10" min="1" max="100">
+            
+            <label for="points">Time Step</label>
+            <input style="margin-right: 50px;" type="range" name="ts" id="ts" value="0" min="0" max="15">
+        </form>
+        
+        <form id="input_form" style="width: 750px;">
+            <fieldset>
+                <legend><b>Animation</b></legend>
+                <input type="radio" name="primitive" id="animate" value="animate" checked> Animate Simulation
+                <input type="radio" name="primitive" id="pause" value="pause"> Pause to Browse Time Steps
+            </fieldset>
+        </form>
+        
     </body>
 	<div class="section">
 	<h7>Directional Control: Q/W/E/S, Tilt Control: A/D, Zoom Control: Z/X</h7>

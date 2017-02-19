@@ -23,7 +23,7 @@ par_dict = {'up':[float("2.3e6"), 2./3, 1./2],
 
 if __name__ == '__main__':
 
-    df = 100
+    df = 20
     space = Space() 
     space.createMass(0, 0, None, 0, 0, 0)
     f = open('data.csv', 'w')
@@ -32,8 +32,8 @@ if __name__ == '__main__':
     for d in range(0,df):
         print(d)
         print(len(space.masses))
+        #space.update2()
         space.update()
-        #Space.update()
 
         with open('data.csv', 'a') as f_out:
             for i in range(len(space.masses)):

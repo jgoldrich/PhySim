@@ -17,9 +17,11 @@ class Mass:
         self.mass = mass
         self.charge = charge
         self.parent_mass = parent_mass
+        self.roll_mat = np.array([[0,-1,0], [1,0,0], [0,0,0]])
 
         if mass == 0:
-            self.location = [0, 0, 0]
+            self.a = [0, 0, 0, 0, 0, 0]
+            self.location = [0., 0., 0.]
             pass
 
             # then is the infinite radius sphere
@@ -31,7 +33,7 @@ class Mass:
         else:
             self.a = np.array([0, 1, 2, 3, 4, 5])
             self.location = self.parent_mass.location
-            self.location[2] += self.radius() + self.parent_mass.radius()
+            #self.location[2] += self.radius() + self.parent_mass.radius()
 		
         # Define the 6 photon-grid on sphere surface
         self.photons = []
@@ -54,10 +56,8 @@ class Mass:
         """
 
         T = np.zeros((6,6), dtype=np.int8)
-        #assert type(axis) is in [-3, -2, -1, 1, 2, 3]
 
         if abs(axis) == 1:
-            
             
             inv = [0, 5]
             T[0,0] = 1
@@ -67,6 +67,8 @@ class Mass:
             T[3,4] = 1
             T[5,5] = 1
 
+            tt = np.array([1, 0, 0])
+            T_rm = np.array([[0,0,1], [1,0,0], [0,1,0]])
 
         if abs(axis) == 2:
     
@@ -77,9 +79,9 @@ class Mass:
             T[0,3] = 1
             T[4,4] = 1
             T[3,5] = 1
-						
-            dx = 1
-            dy = 0
+			
+            tt = np.array([0, 1, 0])
+            T_rm = np.array([[0,0,-1], [0,1,0], [-1,0,0]])
 
         if abs(axis) == 3:
 
@@ -91,23 +93,27 @@ class Mass:
             T[0,4] = 1
             T[4,5] = 1
 
-            dx = 0
-            dy = 1
+            tt = np.array([0, 0, 1])
+            T_rm = np.array([[0,1,0], [1,0,0], [0,0,1]])
+
 
         if axis > 0:
-            self.a = np.dot(np.a, T)
-            self.location[0] += dx
-            self.location[1] += dy
+            self.a = np.dot(self.a, T)
+            V = np.dot(np.transpose(self.roll_mat), np.transpose(tt))
+            self.location += V
+            self.roll_mat = np.dot(self.roll_mat, T_rm)
         else:
-            self.a = np.dot(np.a, np.transpose(T))
-            self.location[0] -= dx
-            self.location[1] -= dy
+            self.a = np.dot(self.a, np.transpose(T))
+            V = np.dot(np.transpose(self.roll_mat), -1*np.transpose(tt))
+            self.location += V
+            self.roll_mat = np.dot(self.roll_mat, -1*T_rm)
 
+        """
         for photon in self.photons:
             if photon.tangent and count<5:
                 count += 1
-                transform(photon.tangent_mass, axis, count)
-			
+                self.transform(axis, count)
+	"""		
             
 
     def interact(self):
@@ -119,16 +125,24 @@ class Mass:
                     state = 0
                 else:
                     state = -1	
-        return state
 
-    def update(self, axis):
+    def move(self, V):
+        
+        self.location += V
+        for photon in self.photons:
+            pass
+#            if photon.tangent:
+                
 
-        state = self.interact()
-        if state == -1:
-            return -1
+    def update(self, axis, V):
 
-        self.transform(axis, 0)
-	
-        return state
+        #print("In 
+        self.interact()
+        #if state == -1:
+        #    return -1
+
+        #self.transform(axis, 0)
+        self.move(V)	
+        #return state
 
 

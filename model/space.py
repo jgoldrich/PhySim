@@ -6,10 +6,11 @@ from datetime import datetime
 
 class Space:
 	
-    def __init__(self):
+    def __init__(self, par_dict):
 		
         self.masses = list()
         random.seed(datetime.now())		
+        self.par_dict = par_dict
 	
     def createMass(self, mass, charge, parent_mass, x, y, z):
         """

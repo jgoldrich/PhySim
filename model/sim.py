@@ -24,7 +24,7 @@ par_dict = {'up':[float("2.3e6"), 2./3, 1./2],
 if __name__ == '__main__':
 
     df = 100
-    space = Space() 
+    space = Space(par_dict) 
     space.createMass(0, 0, None, 0, 0, 0)
     f = open('data.csv', 'w')
     f.close()

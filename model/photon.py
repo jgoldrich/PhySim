@@ -11,6 +11,7 @@ class Photon:
         self.weak = False
         self.gravity = mass.mass
         self.photon_num = photon_num
+
         
         self.mass = mass
         

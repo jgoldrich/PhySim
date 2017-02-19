@@ -121,12 +121,13 @@ class Mass:
                     state = -1	
         return state
 
-    def update(self):
+    def update(self, axis):
 
         state = self.interact()
         if state == -1:
             return -1
-        self.transform()
+
+        self.transform(axis, 0)
 	
         return state
 

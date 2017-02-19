@@ -1,7 +1,7 @@
 import numpy as np
 from sets import Set
 from photon import Photon
-
+from interactLaw import dummy
 
 
 def Class Mass:
@@ -22,7 +22,7 @@ def Class Mass:
 	    # then is the infinite radius sphere
             # --> is a Cartesian two-space (R2)
             #do something
-	    pas
+	    pass
 	else if parent_mass.mass == 0:
             self.a = np.array([0, 1, 2, 3, 4, 5])
 	    self.location = [x, y, z]
@@ -56,7 +56,7 @@ def Class Mass:
 			self.loc[1] = self.loc[1] - 1
        """
 
-    def transform(self, axis):
+    def transform(self, axis, count):
     """ 
         Performs the rotation transformation on photon array
         inputs: axis (element of [-3 -2 -1 1 2 3])
@@ -75,6 +75,7 @@ def Class Mass:
             T[2,3] = 1
             T[3,4] = 1
             T[5,5] = 1
+
 
         if abs(axis) == 2:
     
@@ -110,11 +111,24 @@ def Class Mass:
             self.a = np.dot(np.a, np.transpose(T))
 			self.location[0] -= dx
 			self.location[1] -= dy
+
+		for photon in self.photons:
+			if photon.tangent && count<5:
+				count++
+				transform(photon.tangent_mass, axis, count)
+			
             
 
     def interact(self):
-
-        pass
+		for photon in self.photons:
+			if photon.tangent:
+				mass = photon.gravity
+				dummy(photon, photon.tangent_mass)
+				if mass < photon.gravity:
+					state = 0
+				else:
+					state = -1	
+        return state
 
     def update(self):
 

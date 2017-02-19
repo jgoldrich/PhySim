@@ -305,6 +305,8 @@ function startup() {
     setupBuffers();
     gl.clearColor(0.0, 0.0, 0.0, 1.0); // background color
     gl.enable(gl.DEPTH_TEST);
+    document.onkeydown = handleKeyDown;
+    document.onkeyup = handleKeyUp;
 
     tick(); // kick off the rendering and animation loop
 }
@@ -312,9 +314,49 @@ function startup() {
 // run on every frame refresh
 function tick() {
     requestAnimFrame(tick); // update stuff
-    
+    handleKeys();
     draw();
     animate();
+}
+
+/* =================================EVENT HANDLING================================= */
+
+// from simple user interaction class example
+var currentlyPressedKeys = {};
+
+function handleKeyDown(event) {
+        currentlyPressedKeys[event.keyCode] = true;
+}
+
+function handleKeyUp(event) {
+        currentlyPressedKeys[event.keyCode] = false;
+}
+
+var Zangle = 0.0;
+var Yangle = 0.0;
+var Xangle = 0.0;
+function handleKeys() {
+    inc = 0.50
+    if (currentlyPressedKeys[65]) {
+        // A
+        Zangle += inc;
+    } else if (currentlyPressedKeys[68]) {
+        // D
+        Zangle -= inc;
+    }
+    
+    if (currentlyPressedKeys[87]) {
+        Yangle -= inc;
+    } else if (currentlyPressedKeys[83]) {
+        Yangle += inc;
+    }
+    
+    if (currentlyPressedKeys[81]) {
+        Xangle -= inc;
+    } else if (currentlyPressedKeys[69]) {
+        Xangle += inc;
+    }
+    
 }
 
 /* =================================RENDERING================================= */
@@ -333,6 +375,10 @@ function draw() {
     
     // Then generate the lookat matrix and initialize the MV matrix to that view
     mat4.lookAt(mvMatrix,eyePt,viewPt,up); 
+    
+    mat4.rotateZ(mvMatrix, mvMatrix, degToRad(Zangle))
+    mat4.rotateY(mvMatrix, mvMatrix, degToRad(Yangle))
+    mat4.rotateX(mvMatrix, mvMatrix, degToRad(Xangle))
     
     // light position
     var lightPosEye4 = vec4.fromValues(0.0, 0.0, 100.0, 1.0);

@@ -371,7 +371,7 @@ function loadData() {
     // load spheres at all time steps from csv
     $.ajax({
         type : "GET",
-        url : "MOCK_DATA2.csv", // data
+        url : "dummy_100steps.csv", // data
         dataType : "text"
     }).done(processData)//.done(processObj).done(startup());
     

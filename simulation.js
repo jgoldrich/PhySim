@@ -395,7 +395,7 @@ function processData(data) {
     
     var currTimeStep = 0;
       
-    var currStepColor = vec3.fromValues(Math.random, Math.random, Math.random());
+    var currStepColor = vec3.fromValues(Math.random(), Math.random(), Math.random());
     
     // parse all the rows
     for (var i = 0; i < allRows.length; i++) {
@@ -417,7 +417,7 @@ function processData(data) {
             currTimeStep++;
             spheres.push([])
             spheres[currTimeStep].push(thisSphere);
-            currStepColor = vec3.fromValues(Math.random, Math.random, Math.random());
+            currStepColor = vec3.fromValues(Math.random(), Math.random(), Math.random());
         }
         
         // reset color

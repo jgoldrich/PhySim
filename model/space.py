@@ -53,7 +53,10 @@ class Space:
                     destroy = True
                     if(destroy):
                         max_len -= 2
-                        counter2 = counter2 + 1
+						if(j-i>2):
+							counter2 += 2
+						else:
+                        	counter2 = counter2 + 1
                         self.destroy_mass(j)
                         self.destroy_mass(i)
                     else:

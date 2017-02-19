@@ -522,7 +522,7 @@ var Yangle = 0.0;
 var Xangle = 0.0;
 depth = 70.0;
 function handleKeys() {
-    inc = 0.50
+    inc = 0.75
     if (currentlyPressedKeys[65]) {
         // A
         Zangle += inc;

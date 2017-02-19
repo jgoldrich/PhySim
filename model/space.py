@@ -85,8 +85,8 @@ class Space:
                 axis = -1*axis
             self.masses[i].update(axis, V)
 
-			for mass in masses:
-				mass.transformed = False
+        for mass in self.masses:
+            mass.transformed = False
 #                if(state == -1):
 #                    self.destroy_mass(i)
 #            self.check_collissions()

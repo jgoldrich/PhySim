@@ -28,7 +28,7 @@ def em(p1,p2):
 
     pass
 
-def all_forces(photon1, photon2)
+def all_forces(photon1, photon2):
 
     if photon1.strong and photon2.strong:
         strong(photon1, photon2)

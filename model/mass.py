@@ -18,7 +18,7 @@ class Mass:
         self.charge = charge
         self.parent_mass = parent_mass
         self.roll_mat = np.array([[0,-1,0], [1,0,0], [0,0,0]])
-		self.transformed = False
+        self.transformed = False
 
         if mass == 0:
             self.a = [0, 0, 0, 0, 0, 0]
@@ -55,17 +55,20 @@ class Mass:
         Performs the rotation transformation on photon array
         inputs: axis (element of [-3 -2 -1 1 2 3])
         """
-		if self.transformed:
-			return
-		
-		tan = []
-		for i in range(len(self.photons)):
-			photon = self.photons[i]
-			if(photon.tangent):
-				tan.insert[0, i]
-				photon.tangent = False	
-				temp = photon.tangent_photon	
-				photon.tangent_photon = None
+        if self.transformed:
+            return
+        else:
+            self.transformed = True
+
+
+        tang = []
+        for i in range(len(self.photons)):
+            photon = self.photons[i]
+            if(photon.tangent):
+                tang.insert[0, i]
+                photon.tangent = False	
+                temp = photon.tangent_photon	
+                photon.tangent_photon = None
 
 
         T = np.zeros((6,6), dtype=np.int8)
@@ -115,25 +118,27 @@ class Mass:
             V = np.dot(np.transpose(self.roll_mat), np.transpose(tt))
             self.location += V
             self.roll_mat = np.dot(self.roll_mat, T_rm)
-			for i in insert:
-				photon = self.photons[i]
-				photon.tangent = True
-				photon.tangent_photon = temp
-				temp.tangent_photon = photon
-				count++;
-				photon.tangent_mass.transform(axis*-1, count)
+            for i in tang:
+                photon = self.photons[i]
+                photon.tangent = True
+                photon.tangent_photon = temp
+                photon.tangent_mass = temp.mass
+                temp.tangent_photon = photon
+                count += 1
+                photon.tangent_mass.transform(axis*-1, count)
         else:
             self.a = np.dot(self.a, np.transpose(T))
             V = np.dot(np.transpose(self.roll_mat), -1*np.transpose(tt))
             self.location += V
             self.roll_mat = np.dot(self.roll_mat, -1*T_rm)
-			for i in insert:
-				photon = self.photons[i]
-				photon.tangent = True
-				photon.tangent_photon = temp
-				temp.tangent_photon = photon
-				count++;
-				photon.tangent_mass.transform(axis*-1, count)
+            for i in tang:
+                photon = self.photons[i]
+                photon.tangent = True
+                photon.tangent_photon = temp
+                photon.tangent_mass = temp.mass
+                temp.tangent_photon = photon
+                count += 1
+                photon.tangent_mass.transform(axis*-1, count)
 
         """
         for photon in self.photons:

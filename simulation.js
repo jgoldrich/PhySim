@@ -44,6 +44,7 @@ function setupSphereBuffers() {
     var sphereSoup=[];
     var sphereNormals=[];
     var numT=sphereFromSubdivision(6,sphereSoup,sphereNormals);
+    console.log(numT);
     sphereVertexPositionBuffer = gl.createBuffer(); // initialize buffer to hold the vertices of the sphere
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer); // set the sphere vertices as a buffer
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphereSoup), gl.STATIC_DRAW); // load the sphere vertices buffer with the data
@@ -322,24 +323,12 @@ function setupBuffers() {
 
 
 function loadData() {
-
-//    $.get("file.csv", function (data) {
-//        processData(data);
-//    }).done( function() { 
-//        startup(); 
-//    })
-    
-//    $.ajax({
-//        url: "dummy_data.csv",
-//        dataType: "text"
-//    }).done(processData);
     
     $.ajax({
-            type : "GET",
-            url : "dummy_data.csv",
-            dataType : "text"
-        }).done(processData);
-
+        type : "GET",
+        url : "dummy_data.csv",
+        dataType : "text"
+    }).done(processData);
     
 }
 
@@ -352,7 +341,7 @@ function processData(data) {
 //    console.log(data);
     
     var allRows = data.split(/\r?\n|\r/); // regex from stack overflow
-    console.log(allRows);
+//    console.log(allRows);
     
     for (var i = 0; i < allRows.length; i++) {
         
@@ -360,13 +349,13 @@ function processData(data) {
         
         var thisRad = parseFloat(currState[0]);
         var thisPos = vec3.fromValues(parseFloat(currState[1]), parseFloat(currState[2]), parseFloat(currState[3]));
-        console.log(thisPos);
+//        console.log(thisPos);
         var thisSphere = new Sphere(thisRad, thisPos);
         spheres.push(thisSphere);
         
     }
     
-    console.log(spheres);
+//    console.log(spheres);
     
     startup();
     
@@ -395,7 +384,7 @@ function tick() {
     handleKeys();
     draw();
     
-    animate();
+//    animate();
 }
 
 /* =================================EVENT HANDLING================================= */

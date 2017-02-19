@@ -94,8 +94,8 @@ def Class Mass:
             T[4,4] = 1
             T[3,5] = 1
 						
-			dx = 1
-			dy = 0
+	    dx = 1
+	    dy = 0
 
         if abs(axis) == 3:
 
@@ -107,22 +107,22 @@ def Class Mass:
             T[0,4] = 1
             T[4,5] = 1
 
-			dx = 0
-			dy = 1
+	    dx = 0
+	    dy = 1
 
         if axis > 0:
             self.a = np.dot(np.a, T)
-			self.location[0] += dx
-			self.location[1] += dy
+	    self.location[0] += dx
+	    self.location[1] += dy
         else:
             self.a = np.dot(np.a, np.transpose(T))
-			self.location[0] -= dx
-			self.location[1] -= dy
+	    self.location[0] -= dx
+	    self.location[1] -= dy
 
-		for photon in self.photons:
-			if photon.tangent && count<5:
-				count++
-				transform(photon.tangent_mass, axis, count)
+	for photon in self.photons:
+	    if photon.tangent && count<5:
+		count++
+		transform(photon.tangent_mass, axis, count)
 			
             
 

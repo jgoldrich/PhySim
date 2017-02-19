@@ -1,21 +1,29 @@
 import numpy as np
 from sets import Set
-
+from photon import Photon
 
 
 
 def Class Mass:
 
-    def __init__(self, par_dict, mass, charge):
+    def __init__(self, par_dict, mass, charge, x, y, z):
     """ 
         inputs: 
         mass (particle, at initialization)
         charge (particle, at initialization)
+		x, y, and z give the location of the mass in space
 
     """
         self.mass = mass
         self.charge = charge
-        self.a = np.array([0, 1, 2, 3, 4, 5])
+		if mass == 0:
+			#do something
+			pass
+		else:
+        	self.a = np.array([0, 1, 2, 3, 4, 5])
+		self.location = [x, y, z]
+		
+		self.photons = [Photon(self.mass, self) for i in range(6)]
 
     def transform(self, axis):
     """ 
@@ -57,4 +65,7 @@ def Class Mass:
             self.a = np.dot(np.a, T)
         else:
             self.a = np.dot(np.a, np.transpose(T))
+
+
+		
 
